@@ -3,7 +3,5 @@
 
 function ang = azi(ang)
 ang=rem(ang,2*pi);
-if (abs(ang)>pi) 
-    ang=ang-sign(ang)*2*pi; 
-end
+ang(abs(ang)>pi)=ang(abs(ang)>pi)-sign(ang(abs(ang)>pi))*2*pi;
 end
