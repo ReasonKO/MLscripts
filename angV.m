@@ -1,7 +1,7 @@
 %angV = angV(Z)
 %angV = angV(re,im)
-%Угол направления вектора.
-%Аналог angle(re+i*im)
+%Угол направления вектора. 
+%Аналог angle(re+i*im) 
 
 function angV = angV(re,im)
 if (nargin==1)
