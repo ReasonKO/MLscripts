@@ -1,21 +1,10 @@
 %return;
 tic();
+global zMain_End
+if (zMain_End==false)
+    warning('<RP>: main if FAILD!')
+end
 zMain_End=false;
-%% SYS %%
-global PAR;
-if isempty(PAR)
-    PAR.MAP_X=8000; %6
-    PAR.MAP_Y=6000; %4
-    PAR.KICK_DIST=120;
-end
-%Внутреннее
-global Pause;
-if isempty(Pause)
-    Pause=0;
-end
-if (Pause)
-    return;
-end
 %% Data
 %от SSL
 global Balls;
@@ -25,6 +14,80 @@ global Yellows;
 global Rules;
 if isempty(Rules)
     Rules=zeros(4,7);
+end
+%% SYS %%
+global PAR;
+if isempty(PAR)
+    PAR.MAP_X=8000; %6
+    PAR.MAP_Y=6000; %4
+    PAR.KICK_DIST=120;
+end
+if ~isfield(PAR,'LGate')
+    PAR.LGate.X=-PAR.MAP_X/2;
+    PAR.LGate.Y=0;    
+    PAR.LGate.ang=0;    
+    PAR.LGate.width=1000;
+end
+if ~isfield(PAR,'RGate')
+    PAR.RGate.X=PAR.MAP_X/2;
+    PAR.RGate.Y=0;
+    PAR.RGate.ang=-pi;    
+    PAR.RGate.width=1000;
+end
+if ~isfield(PAR,'RobotSize')
+    PAR.RobotSize=100;
+end
+if ~isfield(PAR,'RobotArm')
+    PAR.RobotArm=100;
+end
+%% RP
+global RP;
+global Modul;
+RP.PAR=PAR;
+% RP.T
+if isfield(RP,'T')
+    if isempty(Modul)
+        RP.dT=toc(RP.T_timerVal);
+    else
+        RP.dT=Modul.dT;
+    end
+    RP.T_timerVal=tic();
+    RP.T=RP.T+RP.dT;
+else
+    RP.dT=0;
+    RP.T_timerVal=tic();
+    RP.T=0;
+end
+% RP.YellowsSpeed
+if isfield(RP,'Yellows')    
+    RP.YellowsSpeed=sqrt((Yellows(:,2)-RP.Yellows(:,2)).^2+(Yellows(:,3)-RP.Yellows(:,3)).^2)/RP.dT;
+else
+    RP.YellowsSpeed=zeros(size(Yellows,1),1);
+end
+RP.YellowsSpeed
+% RP.BluesSpeed
+if isfield(RP,'Blues')    
+    RP.BluesSpeed=sqrt((Blues(:,2)-RP.Blues(:,2)).^2+(Blues(:,3)-RP.Blues(:,3)).^2)/RP.dT;
+else
+    RP.BluesSpeed=zeros(size(Blues,1),1);
+end
+% RP.BallsSpeed
+if isfield(RP,'Balls')    
+    RP.BallsSpeed=sqrt((Balls(:,2)-RP.Balls(:,2)).^2+(Balls(:,3)-RP.Balls(:,3)).^2)/RP.dT;
+else
+    RP.BallsSpeed=zeros(size(Balls,1),1);
+end
+% RP - Save
+RP.Blues=Blues;
+RP.Yellows=Yellows;
+RP.Balls=Balls;
+RP.Rules=Rules;
+% RP.Pause
+if ~isfield(RP,'Pause')    
+    RP.Pause=0;
+end
+if (RP.Pause)
+    return;
 end
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %%-------------------------ОПИСАНИЕ РОБОТОВ--------------------------------
@@ -76,23 +139,9 @@ G=[0,0];            %Ворота
 ST=[-1500,1200];    %Точка ожидания
 Opponent=Blues(Blues(:,1)>0,2:3);                 %Соперники (все синии)
 Opponent2=[Yellows(Yellows(:,1)>0,2:3);Opponent]; %Препятствия (все роботы)
-if  ((Balls(1)==0)||(abs(B(1))>PAR.MAP_X/2-300)||(abs(B(2))>PAR.MAP_Y/2-300)) %Если мячь не в играбетельной зоне
-    if (norm(ST-X(1:2))>300) %Если расстояния до точки ожидания больше 300
-        [Left,Right]=TrackAvoidance(X(1:2),X(3),ST,angV(B-ST),12,Opponent,0,0); %Обходим препятствия и едем к ST
-    else
-        Left=0; Right=0;        %Остановились.
-    end
-    Kick=0;
-else
-    if (norm(B-X(1:2))<700 && isSectorClear(X(1:2),B,angV(G-B),Opponent,100)) %Если мы близки к мячу и сектор для захода свободен
-        [Left,Right,Kick]=GOSlide(X(1:2),X(3),B,angV(G-B));       %Заход на мячь
-    else
-        Kick=0;
-        [Left,Right]=TrackAvoidance(X(1:2),X(3),B,angV(G-B),2,Opponent);  %Обходим препятствия и едем к B
-    end
-end
-[Left,Right]=ReactAvoidance(Left,Right,X(1:2),X(3),Opponent2); %Реактивные обход препятствий (не врезаться в своих).
-Rule(4,Left,Right,-Kick,0,0); %Отправляем на 4ого робота.
+N=4;                %Отправляем на Nого робота
+
+SCRIPT_atack(N,X,B,G,ST,Opponent,Opponent2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Голкипер.
 if (Balls(1)==0)

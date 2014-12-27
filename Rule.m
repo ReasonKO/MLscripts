@@ -1,9 +1,9 @@
 %Rule(Nom,Left,Right,Kick,Sound,Sensor)
 %Размещение нового управления в массиве Rules
-%Добавление 1ого елемента [1,*,*,...]
+%Добавление 1ого елемента   [1,*,*,...]
 
 function Rule(Nom,Left,Right,Kick,Sound,Sensor)
-global Pause;
+global RP;
 global Rules;
 RulesI=1;
 Rules_length=size(Rules,1);
@@ -32,7 +32,7 @@ Left=fix(Left);
 %
 
 %% Передача управления
-if (Pause~=1)
+if (RP.Pause~=1)
     Rules(RulesI,1)=1;
     Rules(RulesI,2)=Nom;
     Rules(RulesI,3)=Left;

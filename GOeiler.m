@@ -1,4 +1,4 @@
-%[Left,Right,Kick]=Goeiler(X,Xang,B,Bang)
+%[Left,Right,Kick]=Goeiler(X,Xang,B,Bang) 
 function [Left,Right,kick]=GOeiler(X,Xang,B,Bang)
 Cang=Bang;
 

@@ -1,8 +1,7 @@
 %PAUSE
-%Создаёт и отменяет паузу
+%Создаёт и отменяет паузу 
 %Во время паузы Rule не передаёт данные
-
-global Pause;
+global RP;
 global Rules;
 
 %% Пересборка управляющего потока
@@ -12,10 +11,15 @@ if (size(Pause)==[0,0])
     Pause=0;
 end
 %Смена паузы.
-Pause=1-Pause
+RP.Pause=1-RP.Pause;
+if (RP.Pause)
+    fprintf('Pause = ON\n');
+else
+    fprintf('Pause = OFF\n');
+end
 
 %% Посылка "Стоп" на всех роботов.
-if (Pause==1)
+if (RP.Pause==1)
     Rules(1,:)=[2,1,0,0,0,0,0];
     Rules(2,:)=[1,0,0,0,0,0,0];
     Rules(3,:)=[1,0,0,0,0,0,0];

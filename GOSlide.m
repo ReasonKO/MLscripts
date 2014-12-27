@@ -1,4 +1,4 @@
-%[Left,Right,Kick]=GoSlide(X,Xang,B,Bang)
+%[Left,Right,Kick]=GoSlide(X,Xang,B,Bang) 
 %≈щЄ один алгоритм забивани€ м€ча
 function [Left,Right,Kick]=GOSlide(X,Xang,B,Bang)
 global PAR;

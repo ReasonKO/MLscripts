@@ -1,4 +1,4 @@
-%re=isSectorClear(X,B,Bang,Opponents,L)
+%re=isSectorClear(X,B,Bang,Opponents,L) 
 %re=isSectorClear(X,B,Bang,Opponents) L=0;
 %re=isSectorClear(X,B,Opponents) Bang=angV(B-X); L=100;
 function re=isSectorClear(X,B,Bang,Opponents,L)

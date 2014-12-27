@@ -1,4 +1,4 @@
-%Описание скрипта
+%Описание скрипта 
 function SCRIPT_atack(N,X,B,G,ST,Opponent,Opponent2)
 global Balls;
 global PAR;

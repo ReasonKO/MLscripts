@@ -2,7 +2,7 @@
 %[Left,Right]=GoToPoint(X,Xang,C,Cang), StopDistance=200;
 %[Left,Right]=GoToPoint(X,Xang,C), Сang=Xang, StopDistance=0;
 %Движение робота Х с углом Xang к точке С.
-%Остановка в окрестности StopDistance и разворот на угол Сang.
+%Остановка в окрестности StopDistance и разворот на угол Сang. 
 function [Left,Right]=GoToPoint(X,Xang,C,Cang,StopDistance)
 %% Параметры по умолчанию
 if (nargin==4)

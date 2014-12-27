@@ -17,12 +17,12 @@ PAR.ROBOT_SIZE_R=100;
 global Modul;
 Modul.Tend=1000; %Время выполнения моделирования
 Modul.dT=0.5;    %Шаг дискретизации
-Modul.Delay=3;   %Задержка управления в шагах дискретизации
+Modul.Delay=0;   %Задержка управления в шагах дискретизации
 Modul.l_wheel=100; %Размер робота
 Modul.T=0;         %Время выполнения программы 
-Modul.N=0;         %Номер шага программы 
+Modul.N=0;         %Номер шага программы  
 Modul.viz=0;       %Визуализировать ли дополнительную анимацию?
-Modul.MapError=[0,10,10,0.05]; %Погрешность передачи координат
+Modul.MapError=0*[0,5,5,0.05]; %Погрешность передачи координат
 
 %Структуры для корректной работы моделирования
 Modul.Save.Yellows=Yellows;
@@ -58,12 +58,6 @@ end
 Blues
 Yellows
 
-%Blues(6,:)=[1,-500,-700,pi];
-%Yellows(1,:)=[1,300,-350,pi];
-%Blues(2,:)=[1,2000,200,pi];
-%Blues(1,:)=[1,-1000,300,0];
-%Blues(2,:)=[1,-2000,500,0];
-
 %for i=1:12
 %    Yellows(i,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
 %end
@@ -73,10 +67,6 @@ while(Modul.T+Modul.dT<=Modul.Tend )
     Rules=zeros(12,7);
     Modul.N=Modul.N+1;
     Modul.T=Modul.T+Modul.dT;    
-    %% Инициализация карты
-    if (Modul.N==1)  
-        MAP_INI        
-    end
     %% Внесение погрешности
     if norm(Modul.MapError)>0
         Modul.Save.Yellows=Yellows;
@@ -91,9 +81,13 @@ while(Modul.T+Modul.dT<=Modul.Tend )
     %======================================================================
     %% Внесение погрешности
     if norm(Modul.MapError)>0
-    Yellows=Modul.Save.Yellows;
-    Blues=Modul.Save.Blues;
-    Balls=Modul.Save.Balls;    
+        Yellows=Modul.Save.Yellows;
+        Blues=Modul.Save.Blues;
+        Balls=Modul.Save.Balls;    
+    end
+    %% Инициализация карты
+    if (Modul.N==1)  
+        MAP_INI        
     end
     %% Задержка
     Rules_Delay_S=Rules;

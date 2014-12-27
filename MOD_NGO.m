@@ -2,7 +2,7 @@
 % MOD_NGO(N,R,Color,speed); ModKickAng=0;
 % MOD_NGO(N,R,Color), speed=1; ModKickAng=0;
 % Соединяет пару номера управления и номера робота
-% И замыкает контур управления
+% И замыкает контур управления 
 
 function MOD_NGO(N,R,Color,speed,ModKickAng)
 if (nargin==3)

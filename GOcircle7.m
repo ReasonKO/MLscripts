@@ -1,5 +1,5 @@
 %[Left,Right,Kick]=GOcircle6(X,Xang,B,Cang)
-% лассический алгоритм забивани€ м€ча в ворота
+% лассический алгоритм забивани€ м€ча в ворота 
 function [Left,Right,Kick]=GOcircle7(X,Xang,B,Cang)
 Bang=Cang;
 A=X;

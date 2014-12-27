@@ -1,5 +1,5 @@
 %re=MOD_GO(X,Xang,Rul)
-%re=[Xn(1),Xn(2),Xangn]
+%re=[Xn(1),Xn(2),Xangn] 
 %Моделирование движения робота
 
 function re=MOD_GO(X,Xang,Rul)

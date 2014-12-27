@@ -5,7 +5,7 @@
 % algN - дл€ каждого робота должен быть свой номер.
 % Opponent - массив координат оппонентов.
 % C_dis - рассто€ние безопасного захода на м€чь.
-% BallDangArea - рассто€ние безопасного объезда цели.
+% BallDangArea - рассто€ние безопасного объезда цели..
 function [Left,Right] = TrackAvoidance(Xagent,Xang,Ball,Cang,algN,Opponent,...
 C_dist,BallDangArea)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

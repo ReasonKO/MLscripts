@@ -1,3 +1,4 @@
+% Реактивное обхождение препятствий
 function [Left,Right] = ReactAvoidance(Left,Right,X,Xang,Opponent)
     if ~isSectorClear(X,X+300*[cos(Xang),sin(Xang)],Opponent);
         V=(Left+Right)/2;
