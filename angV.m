@@ -1,6 +1,6 @@
 %angV = angV(Z)
 %angV = angV(re,im)
-%Угол направления вектора Z.
+%Угол направления вектора.
 %Аналог angle(re+i*im)
 
 function angV = angV(re,im)
