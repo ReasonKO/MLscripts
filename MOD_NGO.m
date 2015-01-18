@@ -1,3 +1,4 @@
+% !Устаревшее!
 % MOD_NGO(N,R,Color,speed,ModKickAng)
 % MOD_NGO(N,R,Color,speed); ModKickAng=0;
 % MOD_NGO(N,R,Color), speed=1; ModKickAng=0;

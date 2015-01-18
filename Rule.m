@@ -1,9 +1,21 @@
 %Rule(Nom,Left,Right,Kick,Sound,Sensor)
+%Rule(Nom,Agent)
 %Размещение нового управления в массиве Rules
 %Добавление 1ого елемента   [1,*,*,...]
 
 function Rule(Nom,Left,Right,Kick,Sound,Sensor)
 global RP;
+if (nargin==2)
+    Agent=Left;
+    Left=Agent.left;
+    Right=Agent.right;
+    Kick=Agent.kick;    
+    Sound=Agent.sound;
+    Sensor=Agent.sensor;
+else
+    warning('<RP>: old definition Rule(Nom,Left,Right,Kick,Sound,Sensor), not recommended\n');
+end
+
 global Rules;
 RulesI=1;
 Rules_length=size(Rules,1);

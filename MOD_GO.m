@@ -61,20 +61,22 @@ end
 % plot(LnC(1),LnC(2),'Y*');
 % plot(RnC(1),RnC(2),'Y*');
 
-a1=angV(LC-RC);
-a2=angV(LnC-RnC);
 
-if (Right-Left>0)&&(a2<a1)
-    a2=a2+2*pi;
-end
-if (Right-Left<0)&&(a2>a1)
-    a2=a2-2*pi;
-end
-
-ad=sign(Right-Left)*abs(a2-a1)/10;
 if (viz) 
+    a1=angV(LC-RC);
+    a2=angV(LnC-RnC);
+
+    if (Right-Left>0)&&(a2<a1)
+        a2=a2+2*pi;
+    end
+    if (Right-Left<0)&&(a2>a1)
+        a2=a2-2*pi;
+    end
+    ad=sign(Right-Left)*abs(a2-a1)/10;
     plot(CC(1)+Xr*cos(a1:ad:a2),CC(2)+Xr*sin(a1:ad:a2),'color',treckcolor);
 end
+
+
 Xn=(LnC+RnC)/2;
 Xangn=angV(RnC-LnC)+pi/2;
 
