@@ -1,5 +1,45 @@
 %Функция начинающая основную "main" функцию.
 %Обязательная для функционирования структуры RP .
+%
+% Описание структура RP
+%        zMain_End: true          %флаг завершения выполнения main
+%          OnModul: 0             %Использование моледирования
+%              PAR: [1x1 struct]  %Набор основных параметров поля
+%               dT: 0.5           %Шаг дискретизации
+%         T_timerH: 24084895062   %Хедер таймера.
+%                T: 12.5          %Врея от первого запуска
+%     YellowsSpeed: [12x1 double] %Скорости жёлтых
+%       BluesSpeed: [12x1 double] %Скорости Синих
+%       BallsSpeed: 0             %Скорость мяча
+%         Ballsang: 0             %Угол направления мяча
+%            Blues: [12x4 double] %Входящий массив синих
+%          Yellows: [12x4 double] %Входящий массив жёлтых
+%            Balls: [0 0 0]       %Входящий массив мячей
+%            Rules: [4x7 double]  %Исходящий массив управления
+%             Ball: [1x1 struct]  %Структура мяча
+%             Blue: [1x12 struct] %Структура синих
+%           Yellow: [1x12 struct] %Структура жёлтых
+%            Pause: 0             %Пауза
+%
+% Описание структуры агентов RP.Blue(N) или RP.Yellow(N)
+% Если робот не был найден, то все поля empty
+%           I: 1                  %Индекс камеры, которая нашла робота
+%           x: 1.0360e+03         %X координата робота
+%           y: -905.6405          %Y координата робота 
+%           z: [1.0360e+03 -905.6405]           %[X,Y] координаты
+%         ang: 0.1835             %Угол направления робота 
+%           v: 97.3253            %Скорость движения робота
+%        Nrul: 0                  %Номер исходящего управления
+%         rul: [1x1 struct]       %Исходящее управление
+%     KickAng: 0                  %Направление удара робота
+%
+% Описание управления RP.Blue(10).rul
+%      sound: 0                   %Издать звук [0..1]
+%     sensor: 0                   %Задействовать сенсор [0..4]
+%       left: 100                 %Мощьность левого колеса [-100..100]
+%      right: 99.2465             %Мощьность правого колеса [-100..100]
+%       kick: -1                  %Удар пиналкой [-1,0,1]
+
 function RPre=mainHeader()
 %% RP
 global RP;
@@ -12,12 +52,7 @@ end
 RP.zMain_End=false;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Data %%
-emptyrul=struct();
-emptyrul.left=0;
-emptyrul.right=0;
-emptyrul.kick=0;
-emptyrul.sound=0;
-emptyrul.sensor=0;
+emptyrul=Crul(0,0,0,0,0);
 %от SSL
 % --- Balls ----
 global Balls;
@@ -92,19 +127,19 @@ else
 end
 %--- speed ---
 % RP.YellowsSpeed
-if isfield(RP,'Yellows') && norm(size(Yellows)-size(RP.Yellows))    
+if isfield(RP,'Yellows') && norm(size(Yellows)-size(RP.Yellows))==0    
     RP.YellowsSpeed=sqrt((Yellows(:,2)-RP.Yellows(:,2)).^2+(Yellows(:,3)-RP.Yellows(:,3)).^2)/RP.dT;
 else
     RP.YellowsSpeed=zeros(size(Yellows,1),1);
 end
 % RP.BluesSpeed
-if isfield(RP,'Blues') && norm(size(Blues)-size(RP.Blues))    
+if isfield(RP,'Blues') && norm(size(Blues)-size(RP.Blues))==0
     RP.BluesSpeed=sqrt((Blues(:,2)-RP.Blues(:,2)).^2+(Blues(:,3)-RP.Blues(:,3)).^2)/RP.dT;
 else
     RP.BluesSpeed=zeros(size(Blues,1),1);
 end
 % RP.BallsSpeed
-if isfield(RP,'Balls') && norm(size(Balls)-size(RP.Balls))
+if isfield(RP,'Balls') && norm(size(Balls)-size(RP.Balls))==0
     RP.BallsSpeed=sqrt((Balls(2)-RP.Balls(2)).^2+(Balls(3)-RP.Balls(3)).^2)/RP.dT;
     RP.Ballsang=angV(RP.Balls(2:3)-Balls(2:3));
 else

@@ -1,5 +1,5 @@
 %Rule(Nom,Left,Right,Kick,Sound,Sensor)
-%Rule(Nom,Agent)
+%Rule(Nom,Agent) - recommended
 %Размещение нового управления в массиве Rules
 %Добавление 1ого елемента   [1,*,*,...]
 

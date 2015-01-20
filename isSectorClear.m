@@ -1,6 +1,9 @@
 %re=isSectorClear(X,B,Bang,Opponents,L) 
 %re=isSectorClear(X,B,Bang,Opponents) L=0;
-%re=isSectorClear(X,B,Opponents) Bang=angV(B-X); L=100;
+%re=isSectorClear(X,B,Opponents) Bang=angV(B-X); L=200;
+% Функция проверяет, попадают ли агенты из массива Opponents в сектор 
+% захода на мячь перед агентом X. L - размер робота, который можно указать
+% в качестве дополнительной толщины сектора.
 function re=isSectorClear(X,B,Bang,Opponents,L)
 if (nargin==4)
     L=0;
