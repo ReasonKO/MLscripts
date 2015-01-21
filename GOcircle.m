@@ -26,19 +26,22 @@ ang2=ang;
 ang2(x>0)=azi(ang(x>0))./(1-max(-0.5,min((N(x>0)-Crad)/Crad,0)));
 ang2(x<=0)=azi(ang(x<=0)).*(1-max(-0.5,min((N(x<=0)-Crad)/Crad,0)));
 %% Kick
-if (x<0 && x>-KICK_DIST && abs(azi(ang2-Aang))<pi/6)
+if (x<0 && x>-KICK_DIST && abs(y)<100 && abs(azi(Aang))<pi/16)
     kick=1;
 else
     kick=0;
 end
+%% Линейное замедление
+if (x<0 && abs(y)<100)
+    V_=max(0.2,min(1,(-x-100)/300));
+else
+    V_=1;
+end
 %% Вычисление скоростей
 %Ub - угловая скорость, V - линейная скорость.
 Ub=azi(ang2-Aang)/pi; 
-Ub=sign(Ub)*min(1,3*abs(Ub));
-V=1-abs(Ub);
-%% Замедление на выходе
-%if (x<0 && x>-Crad && abs(y)<Crad)    
-%end
+Ub=sign(Ub)*min(1,2*abs(Ub));
+V=V_*(1-abs(Ub));
 %% Переход к колесам
 rul=Crul(100*(V-Ub),100*(V+Ub),kick,0,0);
 end

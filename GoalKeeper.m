@@ -1,4 +1,5 @@
 %[Left,Right,Kick]=GoalKeeper(X,Xang,B,G)
+%rul=GoalKeeper(Agent,B,G)
 %Функция движения воротаря в точке X с углом Xang
 %B - положение мяча. G - положение центра ворот.
 %Алгоритм
@@ -7,13 +8,20 @@
 %А3)Выбить пойманый мяч.
 %---v0.7--- 
 function [Left,Right,Kick]=GoalKeeper(X,Xang,B,G)
+if (nargin==3)
+    Agent=X;
+    X=Agent.z;
+    G=B;
+    B=Xang;
+    Xang=Agent.ang;
+end
 %Cx=G(1)%-400*sign(G(1));
 %пиналка по левой стороне!!!
 %% Параметры
 lgate=500; %Ширина ворот.
 DefDist=300; %Глубина ворот.
-%%
-Kick=0;
+XaccelL=150;
+YaccelL=50;
 %% Определение точки защиты С
 %B(2)/3000*lgate
 %---Биссектриса---
@@ -43,13 +51,14 @@ else
     Ub=azi(Cang-Xang)/pi;
 end
 
-V_=max( (abs(C(2)-X(2))-50)/250 , (abs(C(1)-X(1))-50)/150 );%Плавное замедление
-V_=max(0,min(1,V_));
-V=V_*RT*(1-abs(Ub));
-
 if (abs(G(1)-X(1))>DefDist && abs(azi(Cang-Xang))/pi>0.5)
     Ub=azi(Cang-Xang)/pi;   
 end
+
+V_=max( (abs(C(2)-X(2))-50)/YaccelL , (abs(C(1)-X(1))-50)/XaccelL );%Плавное замедление
+V_=max(0,min(1,V_));
+V=V_*RT*(1-abs(Ub));
+
 
 %global PAR
 %if (norm(B-X)<300 && abs(azi(angV(B-X)-Xang-sign(G(1))*pi/2))<pi/4)
@@ -57,10 +66,18 @@ end
 %end
 if (norm(B-X)<300 && abs(azi(angV(B-X)-Xang-pi/2))<pi/4)
     Kick=1;
+else
+    Kick=0;
 end
 %% RE
 Left =100*(V-Ub);
 Right=100*(V+Ub);
+if (nargin==3)
+    rul=Crul(Left,Right,Kick,0,0);
+    Left=rul;
+    Right=0;
+    Kick=0;
+end
 %% Визуализация
 % global viz_gk_C;
 % global MAP_H;

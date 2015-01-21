@@ -11,13 +11,17 @@ MAP(); %Отрисовка карты.
 %% CONTRIL BLOCK
 
 %% Нападающий
-RP.Blue(10).rul=GOcircle(RP.Blue(10),RP.Ball.z,angV(-RP.Ball.z));
+G=[-3100,0];            %Ворота
+RP.Blue(10).rul=GOcircle(RP.Blue(10),RP.Ball.z,angV(G-RP.Ball.z));
 
-
+%% Голкипер.
+G=[-2800,0]; %Уровень ворот
+RP.Yellow(5).rul=GoalKeeper(RP.Yellow(5),RP.Ball.z,G);
+RP.Yellow(5).KickAng=-pi/2;    
 %%  TrackAvoidance (Нападающий)
 B=Balls(2:3);       %цель
 X=Yellows(4,2:4);   %Входящий робот (4ый среди жёлтых)
-G=[0,0];            %Ворота
+G=[-3000,0];            %Ворота
 ST=[-1500,1200];    %Точка ожидания
 Opponent=Blues(Blues(:,1)>0,2:3);                 %Соперники (все синии)
 Opponent2=[Yellows(Yellows(:,1)>0,2:3);Opponent]; %Препятствия (все роботы)
@@ -39,7 +43,7 @@ else
     end
 end
 [Left,Right]=ReactAvoidance(Left,Right,X(1:2),X(3),Opponent2); %Реактивные обход препятствий (не врезаться в своих).
-RP.Yellow(4).rul=Crul(Left,Right,Kick,0,0);
+%RP.Yellow(4).rul=Crul(Left,Right,Kick,0,0);
 %Rule(4,Left,Right,-Kick,0,0); %Отправляем на 4ого робота.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

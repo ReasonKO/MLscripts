@@ -12,17 +12,16 @@ global PAR;
 PAR.MAP_X=6000;
 PAR.MAP_Y=4000;
 PAR.KICK_DIST=150;
-PAR.ROBOT_SIZE_R=100;
 %% Modul INI
 global Modul;
-Modul.Tend=1000; %Время выполнения моделирования
-Modul.dT=0.2;    %Шаг дискретизации
-Modul.Delay=2;   %Задержка управления в шагах дискретизации
+Modul.Tend=3000; %Время выполнения моделирования
+Modul.dT=0.5;    %Шаг дискретизации
+Modul.Delay=3;   %Задержка управления в шагах дискретизации
 Modul.l_wheel=100; %Размер робота
 Modul.T=0;         %Время выполнения программы 
 Modul.N=0;         %Номер шага программы  
 Modul.viz=0;       %Визуализировать ли дополнительную анимацию?
-Modul.MapError=0*[0,5,5,0.05]; %Погрешность передачи координат
+Modul.MapError=[0,5,5,0.05]; %Погрешность передачи координат
 
 %Структуры для корректной работы моделирования
 Modul.Save.Yellows=Yellows;
@@ -38,35 +37,14 @@ for i=1:Modul.Delay;
 end
 %==========================================================================
 %% INI начальных позиций
-Balls(:)=[1,1900,00];
-%Yellows(1,:)=[1,400,-200,pi/4];
-%Yellows(2,:)=[1,-500,600,-pi/2];
-%Yellows(3,:)=[1,000,800,pi];
-%Blues(1,:)=[1,100,150,pi];
-%Blues(2,:)=[1,-300,300,pi/4];
-%Blues(3,:)=[1,-500,300,pi/4];
-
-%Blues(10,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-Blues(10,:)=[1,500,-1000,-pi];
-Blues(9,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-%Yellows(10,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-Yellows(4,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-
-%for i=1:0
-%    Yellows(i,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-%    Blues(i,:)7=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-%end
-
+INIStartPosition();
+fprintf('Начальные позиции агентов:\n');
 Blues
 Yellows
 
-%for i=1:12
-%    Yellows(i,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-%end
 %==========================================================================
 %% Цикл
 while(Modul.T+Modul.dT<=Modul.Tend )    
-    %pause(0.1)
     Rules=zeros(12,7);
     Modul.N=Modul.N+1;
     Modul.T=Modul.T+Modul.dT;    

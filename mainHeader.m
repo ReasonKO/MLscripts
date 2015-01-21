@@ -80,8 +80,15 @@ end
 %% SYS %%
 global PAR;
 if isempty(PAR)
-    PAR.MAP_X=8000; %6
-    PAR.MAP_Y=6000; %4
+    PAR=struct();
+end
+if ~isfield(PAR,'MAP_X')
+    PAR.MAP_X=6000; %6
+end
+if ~isfield(PAR,'MAP_Y')
+    PAR.MAP_Y=4000; %4
+end
+if ~isfield(PAR,'KICK_DIST')
     PAR.KICK_DIST=120;
 end
 if ~isfield(PAR,'LGate')
@@ -179,7 +186,7 @@ for i=1:size(Yellows,1)
         RP.Yellow(i).x=Yellows(i,2);
         RP.Yellow(i).y=Yellows(i,3);
         RP.Yellow(i).z=Yellows(i,2:3);
-        RP.Yellow(i).ang=0;
+        RP.Yellow(i).ang=Yellows(i,4);
         RP.Yellow(i).v=RP.YellowsSpeed(i);
         RP.Yellow(i).Nrul=0;
         RP.Yellow(i).rul=emptyrul;
