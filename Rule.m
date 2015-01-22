@@ -7,13 +7,13 @@ function Rule(Nom,Left,Right,Kick,Sound,Sensor)
 global RP;
 if (nargin==2)
     Agent=Left;
-    Left=Agent.left;
-    Right=Agent.right;
-    Kick=Agent.kick;    
-    Sound=Agent.sound;
-    Sensor=Agent.sensor;
+    Left=Agent.rul.left;
+    Right=Agent.rul.right;
+    Kick=Agent.rul.kick;    
+    Sound=Agent.rul.sound;
+    Sensor=Agent.rul.sensor;
 else
-    warning('<RP>: old definition Rule(Nom,Left,Right,Kick,Sound,Sensor), not recommended\n');
+    warning('<RP>: old definition Rule(Nom,Left,Right,Kick,Sound,Sensor), not recommended');
 end
 
 global Rules;

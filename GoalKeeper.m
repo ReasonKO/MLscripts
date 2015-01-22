@@ -16,9 +16,9 @@ if (nargin==3)
     Xang=Agent.ang;
 end
 %Cx=G(1)%-400*sign(G(1));
-%пиналка по левой стороне!!!
+%пиналка на левой стороне!!!
 %% Параметры
-lgate=500; %Ширина ворот.
+lgate=1000; %Ширина ворот.
 DefDist=300; %Глубина ворот.
 XaccelL=150;
 YaccelL=50;
@@ -64,7 +64,8 @@ V=V_*RT*(1-abs(Ub));
 %if (norm(B-X)<300 && abs(azi(angV(B-X)-Xang-sign(G(1))*pi/2))<pi/4)
 %    Kick=1
 %end
-if (norm(B-X)<300 && abs(azi(angV(B-X)-Xang-pi/2))<pi/4)
+MOD=-1; %1
+if (norm(B-X)<300 && abs(azi(angV(B-X)-Xang-MOD*pi/2))<pi/4)
     Kick=1;
 else
     Kick=0;

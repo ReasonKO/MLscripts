@@ -45,6 +45,7 @@ function RPre=mainHeader()
 global RP;
 if isempty(RP)
     fprintf('<RP>: ---RP initial---\n');
+    RP.inpair=false;    
 end
 if isfield(RP,'zMain_End') && (RP.zMain_End==false)
     warning('<RP>: main if FAIL!');
@@ -76,6 +77,15 @@ if isempty(Rules)
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Разбор входящих данных %%
+if ~isfield(RP,'pair')
+    RP.pair=struct();
+    if ~isfield(RP.pair,'Yellows')
+        RP.pair.Yellows=-ones(size(Yellows,1),1);
+    end
+    if ~isfield(RP.pair,'Blues')
+        RP.pair.Blues=-ones(size(Blues,1),1);
+    end
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% SYS %%
 global PAR;
@@ -136,13 +146,17 @@ end
 % RP.YellowsSpeed
 if isfield(RP,'Yellows') && norm(size(Yellows)-size(RP.Yellows))==0    
     RP.YellowsSpeed=sqrt((Yellows(:,2)-RP.Yellows(:,2)).^2+(Yellows(:,3)-RP.Yellows(:,3)).^2)/RP.dT;
+    RP.YellowsAngSpeed=(Yellows(:,4)-RP.Yellows(:,4))/RP.dT;
 else
+    RP.YellowsAngSpeed=zeros(size(Yellows,1),1);
     RP.YellowsSpeed=zeros(size(Yellows,1),1);
 end
 % RP.BluesSpeed
 if isfield(RP,'Blues') && norm(size(Blues)-size(RP.Blues))==0
     RP.BluesSpeed=sqrt((Blues(:,2)-RP.Blues(:,2)).^2+(Blues(:,3)-RP.Blues(:,3)).^2)/RP.dT;
+    RP.BluesAngSpeed=(Blues(:,4)-RP.Blues(:,4))/RP.dT;
 else
+    RP.BluesAngSpeed=zeros(size(Blues,1),1);
     RP.BluesSpeed=zeros(size(Blues,1),1);
 end
 % RP.BallsSpeed
@@ -168,38 +182,37 @@ RP.Ball.v=RP.BallsSpeed;
 
 
 for i=1:size(Blues,1)
-    if ((Blues(i,1)==1) || (i==size(Blues,1)))
         RP.Blue(i).I=Blues(i,1);
         RP.Blue(i).x=Blues(i,2);
         RP.Blue(i).y=Blues(i,3);
         RP.Blue(i).z=Blues(i,2:3);
         RP.Blue(i).ang=Blues(i,4);
         RP.Blue(i).v=RP.BluesSpeed(i);
-        RP.Blue(i).Nrul=0;
+        RP.Blue(i).u=RP.BluesAngSpeed(i);
+        RP.Blue(i).Nrul=RP.pair.Yellows(i);
         RP.Blue(i).rul=emptyrul;
         RP.Blue(i).KickAng=0;
-    end
 end
 for i=1:size(Yellows,1)
-    if ((Yellows(i,1)==1) || (i==size(Yellows,1)))
         RP.Yellow(i).I=Yellows(i,1);
         RP.Yellow(i).x=Yellows(i,2);
         RP.Yellow(i).y=Yellows(i,3);
         RP.Yellow(i).z=Yellows(i,2:3);
         RP.Yellow(i).ang=Yellows(i,4);
         RP.Yellow(i).v=RP.YellowsSpeed(i);
-        RP.Yellow(i).Nrul=0;
+        RP.Yellow(i).u=RP.YellowsAngSpeed(i);
+        RP.Yellow(i).Nrul=RP.pair.Yellows(i);
         RP.Yellow(i).rul=emptyrul;
         RP.Yellow(i).KickAng=0;
-    end
 end
 % --- RP.Pause ---
 if ~isfield(RP,'Pause')    
     RP.Pause=0;
 end
-if (RP.Pause)
-    return;
-end
+pair();
+%if (RP.Pause)
+%    return;
+%end
 %% re
 RPre=RP;
 end

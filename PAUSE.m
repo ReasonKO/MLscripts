@@ -7,9 +7,6 @@ global Rules;
 %% ѕересборка управл€ющего потока
 pcode main.m;
 Rules=zeros(size(Rules));
-if (size(Pause)==[0,0])
-    Pause=0;
-end
 %—мена паузы.
 RP.Pause=1-RP.Pause;
 if (RP.Pause)

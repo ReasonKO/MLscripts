@@ -4,8 +4,10 @@
 % В качестве аргумента и результата использует структуры из RP
 function rul = GOcircle(agent,C,Cang)
 %% Параметры локальные (Подлежат настройке)
-Crad=300;
-Cradmax=600;
+Crad=500;
+Cradmax=700;
+dYmax=100;
+dANGmax=pi/16;
 %% Параметры
 global PAR;
 KICK_DIST=PAR.KICK_DIST;
@@ -26,22 +28,34 @@ ang2=ang;
 ang2(x>0)=azi(ang(x>0))./(1-max(-0.5,min((N(x>0)-Crad)/Crad,0)));
 ang2(x<=0)=azi(ang(x<=0)).*(1-max(-0.5,min((N(x<=0)-Crad)/Crad,0)));
 %% Kick
-if (x<0 && x>-KICK_DIST && abs(y)<100 && abs(azi(Aang))<pi/16)
+if (x<0 && x>-KICK_DIST && abs(y)<dYmax && abs(azi(Aang))<pi/dANGmax)
     kick=1;
 else
     kick=0;
 end
 %% Линейное замедление
-if (x<0 && abs(y)<100)
-    V_=max(0.2,min(1,(-x-100)/300));
+if (x<0 && abs(y)<dYmax)
+    if (x>-KICK_DIST)
+        ang2=0;
+    end
+    V_=max(0.2,min(1,(-x-200)/200));
 else
     V_=1;
+end
+%% Отход назад
+Rsize=400;
+if ((norm([x,y])<Rsize) && (abs(azi(ang2-Aang))>pi/2))
+    V_=min(1,max(-1,(norm([x,y])-Rsize)/100));
 end
 %% Вычисление скоростей
 %Ub - угловая скорость, V - линейная скорость.
 Ub=azi(ang2-Aang)/pi; 
-Ub=sign(Ub)*min(1,2*abs(Ub));
+Ub=sign(Ub)*min(1,max(2*min(1/5,abs(Ub)),abs(Ub)));
 V=V_*(1-abs(Ub));
 %% Переход к колесам
 rul=Crul(100*(V-Ub),100*(V+Ub),kick,0,0);
+%% debug
+%fprintf(' x=%f ,y=%f, Aang=%f, Dang=%f, \n Dangpi=%f, Ub=%f, V_=%f, V=%f, kick=%f\n',x,y,Aang,azi(ang2-Aang),azi(ang2-Aang)/pi,Ub,V_,V,kick);
+%fprintf(' Left=%f ,Right=%f, Kick=%f,\n',rul.left,rul.right,rul.kick);
+
 end
