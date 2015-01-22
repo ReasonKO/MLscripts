@@ -13,7 +13,6 @@ MAP(); %Отрисовка карты.
 %% Нападающий
 G=[-3100,0];            %Ворота
 RP.Blue(10).rul=GOcircle(RP.Blue(10),RP.Ball.z,angV(G-RP.Ball.z));
-
 %% Голкипер.
 G=[-2800,0]; %Уровень ворот
 RP.Yellow(5).rul=GoalKeeper(RP.Yellow(5),RP.Ball.z,G);
