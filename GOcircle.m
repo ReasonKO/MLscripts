@@ -7,7 +7,7 @@ function rul = GOcircle(agent,C,Cang)
 Crad=500;
 Cradmax=700;
 dYmax=100;
-dANGmax=pi/16;
+dANGmax=pi/12;
 %% Параметры
 global PAR;
 KICK_DIST=PAR.KICK_DIST;
@@ -38,10 +38,11 @@ if (x<0 && abs(y)<dYmax)
     if (x>-KICK_DIST)
         ang2=0;
     end
-    V_=max(0.2,min(1,(-x-200)/200));
+    V_=max(0.3,min(1,(-x-200)/200));
 else
     V_=1;
 end
+V_
 %% Отход назад
 Rsize=400;
 if ((norm([x,y])<Rsize) && (abs(azi(ang2-Aang))>pi/2))

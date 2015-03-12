@@ -31,7 +31,7 @@ if (abs(Right)>100)
     Right=sign(Right)*100; 
 end
 if (abs(Left)>100) 
-    Left=sign(Left)*100;  
+    Left=sign(Left)*100; 
 end
 % Округление
 Right=fix(Right);
@@ -48,7 +48,7 @@ if (RP.Pause~=1)
     Rules(RulesI,1)=1;
     Rules(RulesI,2)=Nom;
     Rules(RulesI,3)=Left;
-    Rules(RulesI,4)=Right;
+    Rules(RulesI,4)=Right
     Rules(RulesI,5)=Kick;
     Rules(RulesI,6)=Sound;
     Rules(RulesI,7)=Sensor;

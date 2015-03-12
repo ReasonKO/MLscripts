@@ -11,11 +11,11 @@ C_dist,BallDangArea)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 TrAv_WorkTime=tic();
 show=1;
-depth=6;
+depth=4;
 
 if (nargin==6)
-    BallDangArea=5;
-    C_dist=200;
+    BallDangArea=4;
+    C_dist=100;
 end
 if (nargin==7)
     BallDangArea=0;
@@ -110,9 +110,10 @@ for j=1:depth
     [weight,R]=min(TFS,[],3);
     weight(Z(C,X,Y))=0;
     weight([1,2,end-1,end],:)=100000;
-%    weight(:,[round(szY/2)]+[3:5])=100000;
     weight(:,[1,2,end-1,end])=100000;
 %    weight([round(szX/4)],[round(szY/2)])=10000;
+   weight(:,[round(szY/2)]+[3:5])=100000;
+
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ReControl

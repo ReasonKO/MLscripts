@@ -29,11 +29,12 @@ PAR.MAP_Y=3100;
 %% CONTRIL BLOCK
 
 %% Нападающий
-%G=[-3100,0];            %Ворота
-%RP.Blue(10).rul=GOcircle(RP.Blue(10),RP.Ball.z,angV(G-RP.Ball.z));
+G=[-3100,0];            %Ворота
+RP.Blue(10).rul=GOcircle(RP.Blue(10),RP.Ball.z,angV(G-RP.Ball.z));
 %% Голкипер.
 G=PAR.RGate.Z; %Уровень ворот
 RP.Yellow(10).rul=GoalKeeperM(RP.Yellow(10),RP.Ball.z,G);
+RP.Yellow(10).KickAng=-pi/2;    
 %%  TrackAvoidance (Нападающий)
 % B=Balls(2:3);       %цель
 % X=Yellows(4,2:4);   %Входящий робот (4ый среди жёлтых)

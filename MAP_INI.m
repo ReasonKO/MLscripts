@@ -16,7 +16,7 @@ clf
 hold on;grid on;
 
 axis equal
-axis([-PAR.MAP_X/2-150,PAR.MAP_X/2+150,-PAR.MAP_Y/2-50,PAR.MAP_Y/2+50]);
+axis([-PAR.MAP_X/2-150,PAR.MAP_X/2+150,-PAR.MAP_Y/2-100,PAR.MAP_Y/2+100]);
 plot(PAR.MAP_X/2*[-1,1,1,-1,-1],PAR.MAP_Y/2*[1,1,-1,-1,1],'W--');
 
 if isfield(PAR,'LGate')

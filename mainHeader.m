@@ -162,7 +162,7 @@ end
 % RP.BallsSpeed
 if isfield(RP,'Balls') && norm(size(Balls)-size(RP.Balls))==0
     RP.BallsSpeed=sqrt((Balls(2)-RP.Balls(2)).^2+(Balls(3)-RP.Balls(3)).^2)/RP.dT;
-    RP.Ballsang=angV(RP.Balls(2:3)-Balls(2:3));
+    RP.Ballsang=angV(Balls(2:3)-RP.Balls(2:3));
 else
     RP.BallsSpeed=zeros(size(Balls,1),1);
     RP.Ballsang=0;
