@@ -1,10 +1,9 @@
 %PAUSE
 %Создаёт и отменяет паузу 
 %Во время паузы Rule не передаёт данные
-global RP;
-global Rules;
+global RP Rules;
 
-%% Пересборка управляющего потока
+%% Пересборка управляющей функции
 pcode main.m;
 Rules=zeros(size(Rules));
 %Смена паузы.
@@ -29,5 +28,7 @@ if (RP.Pause==1)
 else
     Rules(1,:)=[2,1,0,0,0,0,0];
 end
-
+%% Использование main
+RP.zMain_End=true;
+main();
 %% 

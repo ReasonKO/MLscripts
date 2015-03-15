@@ -14,15 +14,16 @@ PAR.MAP_Y=4000;
 PAR.KICK_DIST=150;
 %% Modul INI
 global Modul;
-Modul.Tend=3000; %Время выполнения моделирования
+Modul.Tend=30000; %Время выполнения моделирования
 Modul.dT=0.5;    %Шаг дискретизации
 Modul.Delay=3;   %Задержка управления в шагах дискретизации
 Modul.l_wheel=100; %Размер робота
 Modul.T=0;         %Время выполнения программы 
 Modul.N=0;         %Номер шага программы  
 Modul.viz=0;       %Визуализировать ли дополнительную анимацию?
-Modul.MapError=[0,5,5,0.05]; %Погрешность передачи координат
-%0.08-0.11
+Modul.MapError=[0,5,5,0.05]; %Погрешность передачи координат %0.08-0.11
+
+Modul.treckcolor=[0,1,0.4];
 %Структуры для корректной работы моделирования
 Modul.Save.Yellows=Yellows;
 Modul.Save.Blues=Blues;
@@ -58,8 +59,8 @@ while(Modul.T+Modul.dT<=Modul.Tend )
         Balls=Modul.Save.Balls+randn(size(Balls)).*Modul.MapError(1:3);
     end
     %% MAIN ---------------------------------------------------------------
-    main1
-    %main   %Основной скрипт, управляющий роботами
+    main
+        %main   %Основной скрипт, управляющий роботами
     %======================================================================
     %% Внесение погрешности
     if norm(Modul.MapError)>0
@@ -70,7 +71,12 @@ while(Modul.T+Modul.dT<=Modul.Tend )
     %% Инициализация карты
     if (Modul.N==1)  
         MAP_INI        
+%        PairStart();
     end
+%    if (RP.pair.N==13)
+%        RP.Pause=false;
+%    end
+%    Rules
     %% Задержка
     Rules_Delay_S=Rules;
     if (Modul.Delay>0)
@@ -84,7 +90,7 @@ while(Modul.T+Modul.dT<=Modul.Tend )
     % пример: MOD_NGO(9,3,'Y'); (Для реализаций Rule в обход RP)
     % 9 - номер цвета робота, 3 - номер управления робота, Y - из жёлиых. 
     MOD_Agents();
-%     MOD_NGO(3,4,'Y');
+    MOD_NGO(12,4,'Y');
 %     MOD_NGO(10,2,'B',1,-pi/2);
 %    SAVE_rip();
 %--------------------------------------------

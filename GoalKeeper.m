@@ -8,12 +8,21 @@
 %А3)Выбить пойманый мяч.
 %---v0.7--- 
 function [Left,Right,Kick]=GoalKeeper(X,Xang,B,G)
-if (nargin==3)
+if (isstruct(X))
+    Struct_Input=true;
     Agent=X;
     X=Agent.z;
     G=B;
     B=Xang;
     Xang=Agent.ang;
+else
+    Struct_Input=false;
+end
+if (isstruct(B))
+    Ball=B;
+    B=stuctB.z;
+else
+    Ball=NaN;
 end
 %Cx=G(1)%-400*sign(G(1));
 %пиналка на левой стороне!!!
@@ -29,15 +38,17 @@ C=G;
 C(2)=C(2)-lgate+2*lgate*norm(G-[0,lgate]-B,2)/( norm(G-[0,lgate]-B,2)+norm(G+[0,lgate]-B,2) );
 %---Не помню что---
 %C=[G(1),-((1-abs(B(1)-G(1))/PAR.MAP_X))^3*B(2)];
-%BallAtack
-global RP;
-BallSpeed=200;
-BallSpeedmin=50;
-B_C=[NaN,NaN];
-if (RP.Ball.v>BallSpeedmin && (abs(azi(angV(G-B)-RP.Ball.ang))<pi/2))
-   B_C(1)=C(1);
-   B_C(2)=B(2)+sin(RP.Ball.ang)*(G(1)-B(1))/cos(RP.Ball.ang);
-   C(2)=(B_C(2)-C(2))*min(1,(RP.Ball.v-BallSpeedmin)/BallSpeed)+C(2);
+
+%Направление движения мяча
+if ~isnan(Ball)
+    BallSpeed=200;
+    BallSpeedmin=50;
+    B_C=[NaN,NaN];
+    if (Ball.v>BallSpeedmin && (abs(azi(angV(G-B)-Ball.ang))<pi/2))
+        B_C(1)=C(1);
+        B_C(2)=B(2)+sin(RP.Ball.ang)*(G(1)-B(1))/cos(RP.Ball.ang);
+        C(2)=(B_C(2)-C(2))*min(1,(RP.Ball.v-BallSpeedmin)/BallSpeed)+C(2);
+    end
 end
 %Выход за края ворот
 if abs(C(2)-G(2))>lgate
@@ -87,11 +98,11 @@ end
 %% RE
 Left =100*(V-Ub);
 Right=100*(V+Ub);
-if (nargin==3)
+if (Struct_Input)
     rul=Crul(Left,Right,Kick,0,0);
     Left=rul;
-    Right=0;
-    Kick=0;
+    Right=NaN;
+    Kick=NaN;
 end
 %% Визуализация
 % global viz_gk_C viz_gk_C2;

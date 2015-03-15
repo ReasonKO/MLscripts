@@ -1,3 +1,5 @@
+% ‘ункци€ авто-сопр€жени€ найденых роботов и управл€ющего номера
+% ƒл€ запуска вызовите PairStart, при этом основна€ функци€ не работает.
 global Blues Yellows Balls Rules RP
 
 if (RP.Pause==0)
@@ -6,9 +8,9 @@ end
 if (RP.inpair==1)
     Rules=zeros(size(Rules));    
     if (RP.pair.N==13)
-        fprintf('<RP>: PAIR in END \n');        
+        fprintf('<RP>: PAIR in END, to start use ''PAUSE'' \n');        
     else
-        fprintf('<RP>: PAIR in WORK: %f\n',RP.pair.N);
+        fprintf('<RP>: PAIR in WORK: %d/12\n',RP.pair.N);
         if (RP.pair.stop)
             Rules(1,:)=[1,0,0,0,0,1,0];
             if (toc(RP.pair.Htime)>2)
@@ -34,7 +36,7 @@ if (RP.inpair==1)
                 end
             end
 
-            if (toc(RP.pair.Htime)>5 || flg==true)
+            if (toc(RP.pair.Htime)>3 || flg==true)
                 RP.pair.Htime=tic();
                 RP.pair.stop=true;
             end

@@ -8,11 +8,7 @@ global Modul;
 dT=Modul.dT;
 l=Modul.l_wheel;
 viz=Modul.viz;
-
-global treckcolor; %Цвет трека
-if (size(treckcolor)==[0,0])
-    treckcolor=[0,1,0.4];
-end
+treckcolor=Modul.treckcolor;
 
 %%
 Left=Rul(1);

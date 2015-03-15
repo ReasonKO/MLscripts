@@ -24,9 +24,9 @@
 % ќписание структуры агентов RP.Blue(N) или RP.Yellow(N)
 % ≈сли робот не был найден, то все пол€ empty
 %           I: 1                  %»ндекс камеры, котора€ нашла робота
-%           x: 1.0360e+03         %X координата робота
+%           x: 103.6005           %X координата робота
 %           y: -905.6405          %Y координата робота 
-%           z: [1.0360e+03 -905.6405]           %[X,Y] координаты
+%           z: [103.6005 -905.6405]           %[X,Y] координаты
 %         ang: 0.1835             %”гол направлени€ робота 
 %           v: 97.3253            %—корость движени€ робота
 %        Nrul: 0                  %Ќомер исход€щего управлени€
@@ -47,7 +47,7 @@ if isempty(RP)
     fprintf('<RP>: ---RP initial---\n');
     RP.inpair=false;    
 end
-if isfield(RP,'zMain_End') && (RP.zMain_End==false)
+if isfield(RP,'zMain_End') && (RP.zMain_End==false) && (RP.inpair==false)
     warning('<RP>: main if FAIL!');
 end
 RP.zMain_End=false;
@@ -209,7 +209,7 @@ end
 if ~isfield(RP,'Pause')    
     RP.Pause=0;
 end
-pair();
+Pair();
 %if (RP.Pause)
 %    return;
 %end

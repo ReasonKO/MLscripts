@@ -1,7 +1,7 @@
 %Функция завершающая основную "main" функцию.
 %Обязательная для функционирования структуры RP .
 function zMain_End = mainEnd()
-global RP;
+global RP Rules;
 RP.zMain_End=true;
 RP.WorkTime=toc(RP.T_timerH);
 if isfield(RP,'WorkTimeMax');
@@ -10,5 +10,22 @@ else
     RP.WorkTimeMax=RP.WorkTime;
 end
 zMain_End=RP.zMain_End;
+
+for i=1:12
+    if isempty(find(Rules(:,2)==i,1))
+        for j=1:12
+            if (RP.Yellow(j).Nrul==i)
+                Rule(RP.Yellow(j).Nrul,RP.Yellow(j));
+            else
+                if (RP.Blue(j).Nrul==i)
+                    Rule(RP.Blue(j).Nrul,RP.Blue(j));                    
+                end
+            end
+        end
+    end
+end
+if norm(Rules)==0
+    warning('Rules is clear! Try use ''PairStart()''.');
+end
 end
 
