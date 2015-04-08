@@ -2,11 +2,10 @@
 %Инициализация структуры MAP и создание figure(100).
 %для быстрой последовательной отрисовки кадров.
 
-global RP;
-if (isempty(RP))
-    error('<RP>: struct RP is not initialized! Run main.m...');
+global PAR; 
+if (isempty(PAR))
+    error('<PAR>: struct PAR is not initialized! Run main.m...');
 end
-PAR=RP.PAR;
 
 global Blues Yellows MAP_PAR
 %clear MAP_PAR;  

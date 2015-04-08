@@ -112,7 +112,7 @@ for j=1:depth
     weight([1,2,end-1,end],:)=100000;
     weight(:,[1,2,end-1,end])=100000;
 %    weight([round(szX/4)],[round(szY/2)])=10000;
-   weight(:,[round(szY/2)]+[3:5])=100000;
+%   weight(:,[round(szY/2)]+[3:5])=100000;
 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

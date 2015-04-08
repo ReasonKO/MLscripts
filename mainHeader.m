@@ -48,7 +48,7 @@ if isempty(RP)
     RP.inpair=false;    
 end
 if isfield(RP,'zMain_End') && (RP.zMain_End==false) && (RP.inpair==false)
-    warning('<RP>: main if FAIL!');
+    fprintf('<RP>: main if FAIL!\n');
 end
 RP.zMain_End=false;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -127,7 +127,7 @@ if isempty(Modul)
 else
     RP.OnModul=true;
 end
-RP.PAR=PAR;
+%RP.PAR=PAR;
 % RP.T
 if isfield(RP,'T')
     if isempty(Modul)
@@ -189,7 +189,7 @@ for i=1:size(Blues,1)
         RP.Blue(i).ang=Blues(i,4);
         RP.Blue(i).v=RP.BluesSpeed(i);
         RP.Blue(i).u=RP.BluesAngSpeed(i);
-        RP.Blue(i).Nrul=RP.pair.Yellows(i);
+        RP.Blue(i).Nrul=RP.pair.Blues(i);
         RP.Blue(i).rul=emptyrul;
         RP.Blue(i).KickAng=0;
 end

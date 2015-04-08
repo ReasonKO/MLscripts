@@ -1,4 +1,5 @@
 %Rule(Nom,Left,Right,Kick,Sound,Sensor)
+%Rule(Nom,Left,Right,Kick,Sound), Sensor=0;
 %Rule(Nom,Agent) - recommended
 %Rule(Nom,rul) 
 %Размещение нового управления в массиве Rules
@@ -6,6 +7,12 @@
 
 function Rule(Nom,Left,Right,Kick,Sound,Sensor)
 global RP;
+if isempty(RP)
+    error('RP is not init');
+end
+if (nargin==5)
+    Sensor=0;
+end
 if (nargin==2)
     if isfield(Left,'rul')
         rul=Left.rul;
@@ -18,7 +25,7 @@ if (nargin==2)
     Sound=rul.sound;
     Sensor=rul.sensor;
 else
-    warning('<RP>: old definition Rule(Nom,Left,Right,Kick,Sound,Sensor), not recommended');
+    %warning('<RP>: old definition Rule(Nom,Left,Right,Kick,Sound,Sensor), not recommended');
     if (isstruct(Left))
         error('error using return of function ''Left=rul''. Using rul=funct() and Rule(Nom,rul)');
     end

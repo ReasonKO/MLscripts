@@ -3,11 +3,13 @@
 % Создание структуры MAP_PAR и перемещение отрисованного ранее.
 
 %% Было ли создано окно?
-global MAP_PAR Blues Yellows Balls RP;
+global MAP_PAR Blues Yellows Balls RP PAR;
 
 if (get(0,'CurrentFigure')==100)
 %% BEGIN 
-PAR=RP.PAR;
+if isempty(MAP_PAR)
+    return;
+end
 
 Viz_empty=false;
 MapModel=[

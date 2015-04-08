@@ -24,8 +24,9 @@ for i=1:12
         end
     end
 end
-if norm(Rules)==0
-    warning('Rules is clear! Try use ''PairStart()''.');
+global Modul;
+if (norm(Rules)==0 && isempty(Modul)) 
+    fprintf('Rules is clear! Use ''PairStart()''.');
 end
 end
 

@@ -2,10 +2,12 @@
 %re=[Xn(1),Xn(2),Xangn] 
 %Моделирование движения робота
 
-function re=MOD_GO(X,Xang,Rul)
-%% Инициализация параметров
+function re=MOD_GO(X,Xang,Rul,dT)
 global Modul;
-dT=Modul.dT;
+if (nargin==3)
+    dT=Modul.dT;
+end
+%% Инициализация параметров
 l=Modul.l_wheel;
 viz=Modul.viz;
 treckcolor=Modul.treckcolor;

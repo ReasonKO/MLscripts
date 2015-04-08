@@ -4,12 +4,10 @@
 % ”чЄт столкновений с бортиками (v=0)
 % ”чЄт пинани€ м€чика роботами (v=200)
 %% globals
-global Yellows;
-global Blues;
-global Balls;
-global PAR;
-global Modul
-
+global Yellows Blues Balls PAR Modul;
+if isempty(Modul)
+    return;
+end
 if ~isfield(Modul,'Ball')
     Modul.Ball.V=0;
     Modul.Ball.Ang=0;

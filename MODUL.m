@@ -8,41 +8,10 @@ global Balls;    Balls=zeros(1,3);
 global Blues;    Blues=zeros(12,4);
 global Yellows;  Yellows=zeros(12,4);
 
-global PAR;
-PAR.MAP_X=6000;
-PAR.MAP_Y=4000;
-PAR.KICK_DIST=150;
-%% Modul INI
-global Modul;
-Modul.Tend=30000; %Время выполнения моделирования
-Modul.dT=0.5;    %Шаг дискретизации
-Modul.Delay=3;   %Задержка управления в шагах дискретизации
-Modul.l_wheel=100; %Размер робота
-Modul.T=0;         %Время выполнения программы 
-Modul.N=0;         %Номер шага программы  
-Modul.viz=0;       %Визуализировать ли дополнительную анимацию?
-Modul.MapError=[0,5,5,0.05]; %Погрешность передачи координат %0.08-0.11
-
-Modul.treckcolor=[0,1,0.4];
-%Структуры для корректной работы моделирования
-Modul.Save.Yellows=Yellows;
-Modul.Save.Blues=Blues;
-Modul.Save.Balls=Balls;
-Modul.YellowsKick=zeros(size(Yellows,1),2);
-Modul.BluesKick=zeros(size(Blues,1),2);
-
-Modul.Ball.Ang=0;      
-Modul.Ball.V=0;
-for i=1:Modul.Delay;
-    Modul.Rules_Delay{i}=Rules;
-end
-%==========================================================================
+%% Инициализация моделирования
+Modul_INI();
 %% INI начальных позиций
 INIStartPosition();
-fprintf('Начальные позиции агентов:\n');
-Blues
-Yellows
-
 %==========================================================================
 %% Цикл
 while(Modul.T+Modul.dT<=Modul.Tend )    
@@ -86,11 +55,30 @@ while(Modul.T+Modul.dT<=Modul.Tend )
         end
         Modul.Rules_Delay{Modul.Delay}=Rules_Delay_S;
     end    
+    
+    floor(Modul.dT/Modul.Delay)
+
+    
+    Modul.Rules_Delay{ceil(Modul.Delay/Modul.dT)}=Rules;     
+    %Rules_Delay_S=Rules;
+    %Rules=Modul.Rules_Delay{1};
+
+    if (rem(Modul.Delay,Modul.dT)>0)
+        MOD(rem(Modul.Delay,Modul.dT)); 
+    end
+    
+    Rules=Modul.Rules_Delay{1};
+    for i=1:ceil(Modul.Delay/Modul.dT)-1
+        Modul.Rules_Delay{i}=Modul.Rules_Delay{i+1};        
+    end
+    %Modul.Rules_Delay{floor(Modul.Delay/Modul.dT)}=Rules_Delay_S;
+    
+    MOD(Modul.dT-rem(Modul.Delay,Modul.dT))
     %% Передача управления роботу
     % пример: MOD_NGO(9,3,'Y'); (Для реализаций Rule в обход RP)
     % 9 - номер цвета робота, 3 - номер управления робота, Y - из жёлиых. 
     MOD_Agents();
-    MOD_NGO(12,4,'Y');
+%    MOD_NGO(12,4,'Y');
 %     MOD_NGO(10,2,'B',1,-pi/2);
 %    SAVE_rip();
 %--------------------------------------------
@@ -99,7 +87,7 @@ while(Modul.T+Modul.dT<=Modul.Tend )
         %Tend=T%+5*dT;
     end
 %% --------MOD_BALL-----------    
-    MOD_Ball    
+    MOD_Ball();
 %%---------DOP------------------------------------------------------------- 
 %     if (abs(Blues(7,4)-pi/2)<0.01)        
 %         Blues(7,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];

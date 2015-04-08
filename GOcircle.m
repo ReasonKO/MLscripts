@@ -5,6 +5,9 @@
 % В качестве аргумента и результата использует структуры из RP
 function rul = GOcircle(agent,C,Cang)
 %% Параметры локальные (Подлежат настройке)
+if (isstruct(C))
+    C=C.z;
+end
 Crad=500;
 Cradmax=700;
 dYmax=100;
