@@ -1,3 +1,4 @@
+%rul = TrackAvoidance(agent,[],Ball,Cang,algN,Opponent,C_dist,BallDangArea);
 %[Left,Right] = TrackAvoidance(Xagent,Xang,Ball,Cang,algN,Opponent,C_dist,BallDangArea);
 %[Left,Right] = TrackAvoidance(Xagent,Xang,Ball,Cang,algN,Opponent,C_dist), BallDangArea=0;
 %[Left,Right] = TrackAvoidance(Xagent,Xang,Ball,Cang,algN,Opponent), C_dist=200, BallDangArea=5;
@@ -9,9 +10,20 @@
 function [Left,Right] = TrackAvoidance(Xagent,Xang,Ball,Cang,algN,Opponent,...
 C_dist,BallDangArea)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if (isstruct(Xagent))
+    if ~isempty(Xang)
+        warning('use Xang=[] if Xagent is struct');
+    end
+    agent=Xagent;
+    Xagent=agent.z;
+    Xang=agent.ang;
+else
+    agent=[];
+end
 TrAv_WorkTime=tic();
 show=1;
 depth=5;%4
+
 
 if (nargin==6)
     BallDangArea=4;
@@ -49,6 +61,7 @@ if ((length(trackavoi.weight)>=algN) ...
 else
     weight=ones(szY,szX)*inf;
 end
+[~,ICang]=min(abs(azi(Cang-angV(sdvig(:,1),sdvig(:,2)))));
 %%
 FF=ones(szY,szX);
 for i=1:size(Opponent,1)
@@ -83,6 +96,7 @@ FF=[ones(lsloy+szY+lsloy,lsloy)*inf,...
     ones(lsloy+szY+lsloy,lsloy)*inf];
 %toc()
 weight(Z(C,X,Y))=0;
+R(Z(C,X,Y))=ICang;
 
 FShelp=zeros(szY,szX,size(sdvig1,1));
 for i=1:size(sdvig1,1)
@@ -109,6 +123,7 @@ for j=1:depth
     end
     [weight,R]=min(TFS,[],3);
     weight(Z(C,X,Y))=0;
+    R(Z(C,X,Y))=ICang;
     weight([1,2,end-1,end],:)=100000;
     weight(:,[1,2,end-1,end])=100000;
 %    weight([round(szX/4)],[round(szY/2)])=10000;
@@ -117,16 +132,22 @@ for j=1:depth
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ReControl
-if ~isnan(weight(Z(Xagent,X,Y)))
+
+if (~isnan(weight(Z(Xagent,X,Y)))) 
     dang=sdvig(R(Z(Xagent,X,Y)),:);
     Ub=azi(angV(dang)-Xang)/pi;
     V=1-abs(Ub);
+    V=V*min(300,weight(Z(Xagent,X,Y)))/300;
     Left =100*(V-Ub);
     Right=100*(V+Ub);
 else
     fprintf('TrackAvoidance: stop=1');
     Left=0;
     Right=0;
+end
+if isstruct(agent)
+    Left=Crul(Left,Right,0,0,0);
+    Right=[];
 end
 %toc()
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -166,7 +187,7 @@ Y=trackavoi.PAR.Y;
             Tmax=10000000;
         end
         weight(weight>Tmax)=NaN;
-        if ~isfield(trackavoi.MAP,'weight')
+        if (~isfield(trackavoi.MAP,'weight') || ~ishandle(trackavoi.MAP.weight))
             trackavoi.MAP.weight=surf(X,Y,weight-Tmax);
         else
             set(trackavoi.MAP.weight,'zdata',weight-Tmax);
@@ -179,12 +200,12 @@ Y=trackavoi.PAR.Y;
             %rnm=repmat(Xtrack,[size(Opponent,1),1])-Opponent;
             %sqrt(min(rnm(:,1).^2+rnm(:,2).^2));
         end     
-        if ~isfield(trackavoi.MAP,'text_stat')
+        if (~isfield(trackavoi.MAP,'text_stat') || ~ishandle(trackavoi.MAP.text_stat))
             trackavoi.MAP.text_stat=text(min(min(X)),max(max(Y))+100,It);
         else
             set(trackavoi.MAP.text_stat,'String',It);
         end
-        if ~isfield(trackavoi.MAP,'track')
+        if ~isfield(trackavoi.MAP,'track') || ~ishandle(trackavoi.MAP.track)
             trackavoi.MAP.track=plot(Xtrack(:,1),Xtrack(:,2),'Y');
             set(trackavoi.MAP.track,'linewidth',3');
         else

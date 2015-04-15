@@ -31,7 +31,7 @@ for MAP_i=1:size(Blues,1)
         viz_x=PAR.RobotSize/2*viz_x+Blues(MAP_i,2);
         viz_y=PAR.RobotSize/2*viz_y+Blues(MAP_i,3);
         if (isempty(MAP_PAR.viz_Blues{MAP_i}))
-            figure(100)
+ %           figure(100)
             MAP_PAR.viz_Blues{MAP_i}(1)=plot(viz_x,viz_y,'B-');             
             set(MAP_PAR.viz_Blues{MAP_i}(1),'LineWidth',1.5);
             MAP_PAR.viz_Blues{MAP_i}(3)=text(Blues(MAP_i,2)+PAR.RobotSize/2,Blues(MAP_i,3)+PAR.RobotSize/2,{MAP_i});
@@ -47,7 +47,7 @@ for MAP_i=1:size(Yellows,1)
         viz_x=PAR.RobotSize/2*viz_x+Yellows(MAP_i,2);
         viz_y=PAR.RobotSize/2*viz_y+Yellows(MAP_i,3);
         if (isempty(MAP_PAR.viz_Yellows{MAP_i}))
-            figure(100)
+%            figure(100)
             MAP_PAR.viz_Yellows{MAP_i}(1)=plot(viz_x,viz_y,'Y-');   
             set(MAP_PAR.viz_Yellows{MAP_i}(1),'LineWidth',1.5);
             MAP_PAR.viz_Yellows{MAP_i}(3)=text(Yellows(MAP_i,2)+PAR.RobotSize/2,Yellows(MAP_i,3)+PAR.RobotSize/2,{MAP_i});
@@ -61,9 +61,9 @@ if (Balls(1)>0)
     viz_x=Balls(2);
     viz_y=Balls(3);
     if (isempty(MAP_PAR.viz_Balls))
-        figure(100)
+%        figure(100)
         MAP_PAR.viz_Balls=plot(viz_x,viz_y,'Ro');
-        set(MAP_PAR.viz_Balls,'ZData',1);
+        %set(MAP_PAR.viz_Balls,'ZData',1);
     else
         set(MAP_PAR.viz_Balls,'xdata',viz_x,'ydata',viz_y);
     end

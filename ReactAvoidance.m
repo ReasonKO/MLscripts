@@ -1,6 +1,7 @@
 %[Left,Right] = ReactAvoidance(Left,Right,X,Xang,Opponent)
 %rul = ReactAvoidance(rul,X,Xang,Opponent)
 % Реактивное обхождение препятствий
+% Только для V>=0
 function [Left,Right] = ReactAvoidance(Left,Right,X,Xang,Opponent)
 RobotsizeX2=200;
 length=400;
@@ -43,6 +44,7 @@ while (dang<pi && re==0)
 end  
 Ubreal=(Right-Left)/200;
 Vreal=(Right+Left)/200;
+Vreal=Vreal+max(0,abs(Ubreal)-0.8);
 if (dang~=0)
     Ubneed=(dang/pi);
     if (Ubneed>=0)
@@ -64,7 +66,7 @@ Right=100*(V+Ub);
 %% graph
 % global map_test_react;
 % if (get(0,'CurrentFigure')==100)
-% if isempty(map_test_react)
+% if isempty(map_test_react) || ~ishandle(map_test_react)
 %     map_test_react=plot(X(1)+length*[0,cos(Xang+dang)],X(2)+length*[0,sin(Xang+dang)],'R');
 % else
 %     set(map_test_react,'xdata',X(1)+length*[0,cos(Xang+dang)],'ydata',X(2)+length*[0,sin(Xang+dang)]);     
