@@ -51,7 +51,7 @@ if  ((Balls(1)==0)||(abs(B(1))>PAR.MAP_X/2-300)||(abs(B(2))>PAR.MAP_Y/2-300)) %Е
     end
     Kick=0;
 else
-    if (norm(B-X(1:2))<700 && isSectorClear(X(1:2),B,angV(G-B),Opponent,100)) %Если мы близки к мячу и сектор для захода свободен
+    if (norm(B-X(1:2))<700 && isSectorClear(X(1:2),B,Opponent,angV(G-B),100)) %Если мы близки к мячу и сектор для захода свободен
         [Left,Right,Kick]=GOSlide(X(1:2),X(3),B,angV(G-B));       %Заход на мячь
     else
         Kick=0;
@@ -80,7 +80,7 @@ if  ((Balls(1)==0)||(abs(B(1))>PAR.MAP_X/2)||(abs(B(2))>PAR.MAP_Y/2)) %Если мячь
     end
     Kick=0;
 else
-    if (norm(B-X(1:2))<700 && isSectorClear(X(1:2),B,angV(G-B),Opponent,100)) %Если мы близки к мячу и сектор для захода свободен
+    if (norm(B-X(1:2))<700 && isSectorClear(X(1:2),B,Opponent,angV(G-B),100)) %Если мы близки к мячу и сектор для захода свободен
         rul=GOcircle(RP.Blue(4),B,angV(G-B));
         Left=rul.left;
         Right=rul.right;
@@ -153,7 +153,7 @@ if  ((Balls(1)==0)||(abs(B(1))>PAR.MAP_X/2-300)||(abs(B(2))>PAR.MAP_Y/2-300)) %Е
     end
     Kick=0;
 else
-    if (norm(B-X(1:2))<700 && isSectorClear(X(1:2),B,angV(G-B),Opponent,100)) %Если мы близки к мячу и сектор для захода свободен
+    if (norm(B-X(1:2))<700 && isSectorClear(X(1:2),B,Opponent,angV(G-B),100)) %Если мы близки к мячу и сектор для захода свободен
         rul=GOcircle(RP.Yellow(6),B,angV(G-B));
         Left=rul.left;
         Right=rul.right;
