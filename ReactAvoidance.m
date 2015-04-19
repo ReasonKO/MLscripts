@@ -4,9 +4,18 @@
 % Только для V>=0
 function [Left,Right] = ReactAvoidance(Left,Right,X,Xang,Opponent)
 RobotsizeX2=200;
-length=400;
+len0=200;
     rul=[];
     agent=[];
+if (nargin==2)
+    agent=Left;
+    Opponent=Right;
+    rul=agent.rul;
+    X=agent.z;
+    Xang=agent.ang;
+    Left=rul.left;
+    Right=rul.right;
+end
 if (nargin==3)
     rul=Left;
     agent=Right;
@@ -30,6 +39,10 @@ if isstruct(X)
     Xang=agent.ang;
     X=agent.z;
 end
+%% Pars
+Ubreal=(Right-Left)/200;
+Vreal=(Right+Left)/200;
+length=len0+Vreal*200;
 %% Alg
 dang=0;
 re=isSectorClear(X,X+length*[cos(Xang),sin(Xang)],Opponent,Xang,RobotsizeX2,0);
@@ -41,9 +54,8 @@ while (dang<pi && re==0)
         dang=-dang-sign(dang)*(pi/180);
     end
     [re,cor]=isSectorClear(X,X+length*[cos(Xang+dang),sin(Xang+dang)],Opponent,Xang+dang,RobotsizeX2,0);    
-end  
-Ubreal=(Right-Left)/200;
-Vreal=(Right+Left)/200;
+end
+
 Vreal=Vreal+max(0,abs(Ubreal)-0.8);
 if (dang~=0)
     Ubneed=(dang/pi);
@@ -57,7 +69,7 @@ else
 end
 Vneed=1-abs(Ub);
 if ~isempty(cor)
-    Vneed=min(1-abs(Ub),norm(cor-X)/length);
+    Vneed=min(Vneed,(norm(cor-X)-200)/len0);
 end
 V=min(Vneed,Vreal);
 %% Переход к колесам

@@ -192,6 +192,7 @@ for i=1:size(Blues,1)
         RP.Blue(i).Nrul=RP.pair.Blues(i);
         RP.Blue(i).rul=emptyrul;
         RP.Blue(i).KickAng=0;
+%        RP.Blue(i).com={i,'Y'};
 end
 for i=1:size(Yellows,1)
         RP.Yellow(i).I=Yellows(i,1);
@@ -200,10 +201,11 @@ for i=1:size(Yellows,1)
         RP.Yellow(i).z=Yellows(i,2:3);
         RP.Yellow(i).ang=Yellows(i,4);
         RP.Yellow(i).v=RP.YellowsSpeed(i);
-        RP.Yellow(i).u=RP.YellowsAngSpeed(i);
+        RP.Yellow(i).u=RP.YellowsAngSpeed(i);        
         RP.Yellow(i).Nrul=RP.pair.Yellows(i);
         RP.Yellow(i).rul=emptyrul;
         RP.Yellow(i).KickAng=0;
+%        RP.Yellow(i).com={i,'Y'};
 end
 % --- RP.Pause ---
 if ~isfield(RP,'Pause')    

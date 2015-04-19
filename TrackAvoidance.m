@@ -22,8 +22,9 @@ else
 end
 TrAv_WorkTime=tic();
 show=1;
-depth=5;%4
-
+depth=10;%4
+MAX_WEIGHT=150000;
+MAX_FF=1000;
 
 if (nargin==6)
     BallDangArea=4;
@@ -31,8 +32,7 @@ if (nargin==6)
 end
 if (nargin==7)
     BallDangArea=0;
-end    
-
+end  
 C=Ball-C_dist*[cos(Cang),sin(Cang)];
 %% ALR{N} PAR
 global trackavoi
@@ -41,7 +41,6 @@ if isempty(trackavoi) || ~isfield(trackavoi,'weight')
     trackavoi.weight=[];
     trackavoi.MAP=[];
 end
-
 szX=trackavoi.PAR.szX;
 szY=trackavoi.PAR.szY;
 X=trackavoi.PAR.X;
@@ -67,7 +66,7 @@ FF=ones(szY,szX);
 for i=1:size(Opponent,1)
     FF=FF+algK./(((X-Opponent(i,1)).^2+(Y-Opponent(i,2)).^2).^(algStep/2));
 end
-%if 0
+FF(FF>100)=100;
 if ~isnan(Cang)
     rz=coor(C,X,Y);   
     rz2=coor(Ball,X,Y);
@@ -77,24 +76,23 @@ if ~isnan(Cang)
                 qwert=[X(rz(2)+i,rz(1)+j)-X(rz(2),rz(1)),...
                        Y(rz(2)+i,rz(1)+j)-Y(rz(2),rz(1))];
                 if ((abs(azi(angV(qwert)-Cang))<4*pi/6) && norm(qwert)>d*2)
-                    FF(rz(2)+i,rz(1)+j)=1000;            
+                    FF(rz(2)+i,rz(1)+j)=50;            
                 end
             end
             if ((rz2(2)+i<=szY) && (rz2(2)+i>0) && (rz2(1)+j<=szX) && (rz2(1)+j>0))
                 qwert=[X(rz2(2)+i,rz2(1)+j)-X(rz2(2),rz2(1)),...
                        Y(rz2(2)+i,rz2(1)+j)-Y(rz2(2),rz2(1))];
                 if ((abs(azi(angV(qwert)-Cang))<4*pi/6) && norm(qwert)>d*2)
-                    FF(rz2(2)+i,rz2(1)+j)=1000;            
+                    FF(rz2(2)+i,rz2(1)+j)=50;            
                 end
             end
         end
     end
 end
-%end
 FF=[ones(lsloy+szY+lsloy,lsloy)*inf,...
     [ones(lsloy,szX)*inf;FF;ones(lsloy,szX)*inf],...
     ones(lsloy+szY+lsloy,lsloy)*inf];
-%toc()
+
 weight(Z(C,X,Y))=0;
 R(Z(C,X,Y))=ICang;
 
@@ -124,16 +122,15 @@ for j=1:depth
     [weight,R]=min(TFS,[],3);
     weight(Z(C,X,Y))=0;
     R(Z(C,X,Y))=ICang;
-    weight([1,2,end-1,end],:)=100000;
-    weight(:,[1,2,end-1,end])=100000;
+    weight([1,2,end-1,end],:)=MAX_WEIGHT;
+    weight(:,[1,2,end-1,end])=MAX_WEIGHT;
 %    weight([round(szX/4)],[round(szY/2)])=10000;
 %   weight(:,[round(szY/2)]+[3:5])=100000;
 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ReControl
-
-if (~isnan(weight(Z(Xagent,X,Y)))) 
+if (~isnan(weight(Z(Xagent,X,Y))) && weight(Z(Xagent,X,Y))<=MAX_WEIGHT) 
     dang=sdvig(R(Z(Xagent,X,Y)),:);
     Ub=azi(angV(dang)-Xang)/pi;
     V=1-abs(Ub);
@@ -156,7 +153,7 @@ trackavoi.weight{algN}=weight;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% PLOTTING
 if show
-    ShowWeight(Xagent,weight,R,TrAv_WorkTime);
+    ShowWeight(Xagent,weight,R,TrAv_WorkTime,algN);
 end
 %==========================================================================
 end
@@ -164,9 +161,16 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function ShowWeight(Xagent,weight,R,TrAv_WorkTime)
+function ShowWeight(Xagent,weight,R,TrAv_WorkTime,algN)
 It=['TrAv_WorkTime=',sprintf('%f',toc(TrAv_WorkTime))];  
 global trackavoi
+if (~isfield(trackavoi.MAP,'algN'))
+    trackavoi.algN=algN;
+else
+    if (trackavoi.algN~=algN)
+        return
+    end
+end
 sdvig=trackavoi.PAR.sdvig;
 X=trackavoi.PAR.X;
 Y=trackavoi.PAR.Y;
