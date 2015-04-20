@@ -133,7 +133,7 @@ if isfield(RP,'T')
     if isempty(Modul)
         RP.dT=toc(RP.T_timerH);
     else
-        RP.dT=Modul.dT;
+        RP.dT=Modul.T-RP.T;%Modul.dT;
     end
     RP.T_timerH=tic();
     RP.T=RP.T+RP.dT;
@@ -145,16 +145,31 @@ end
 %--- speed ---
 % RP.YellowsSpeed
 if isfield(RP,'Yellows') && norm(size(Yellows)-size(RP.Yellows))==0    
-    RP.YellowsSpeed=sqrt((Yellows(:,2)-RP.Yellows(:,2)).^2+(Yellows(:,3)-RP.Yellows(:,3)).^2)/RP.dT;
-    RP.YellowsAngSpeed=(Yellows(:,4)-RP.Yellows(:,4))/RP.dT;
+    if (RP.dT>0)
+        RP.YellowsSpeed=sqrt((Yellows(:,2)-RP.Yellows(:,2)).^2+(Yellows(:,3)-RP.Yellows(:,3)).^2)/RP.dT;
+        RP.YellowsAngSpeed=azi(Yellows(:,4)-RP.Yellows(:,4))/RP.dT;
+        RP.YellowsSpeed(abs(azi(angV(Yellows(:,2)-RP.Yellows(:,2),Yellows(:,3)-RP.Yellows(:,3))-RP.Yellows(:,4)))>pi/2)=...
+            -RP.YellowsSpeed(abs(azi(angV(Yellows(:,2)-RP.Yellows(:,2),Yellows(:,3)-RP.Yellows(:,3))-RP.Yellows(:,4)))>pi/2);
+
+        RP.YellowsSpeed(or(Yellows(:,1)==0,RP.Yellows(:,1)==0))=0;
+        RP.YellowsAngSpeed(or(Yellows(:,1)==0,RP.Yellows(:,1)==0))=0;
+    end
 else
     RP.YellowsAngSpeed=zeros(size(Yellows,1),1);
     RP.YellowsSpeed=zeros(size(Yellows,1),1);
 end
 % RP.BluesSpeed
 if isfield(RP,'Blues') && norm(size(Blues)-size(RP.Blues))==0
-    RP.BluesSpeed=sqrt((Blues(:,2)-RP.Blues(:,2)).^2+(Blues(:,3)-RP.Blues(:,3)).^2)/RP.dT;
-    RP.BluesAngSpeed=(Blues(:,4)-RP.Blues(:,4))/RP.dT;
+    if (RP.dT>0)
+        RP.BluesSpeed=sqrt((Blues(:,2)-RP.Blues(:,2)).^2+(Blues(:,3)-RP.Blues(:,3)).^2)/RP.dT;    
+        RP.BluesAngSpeed=azi(Blues(:,4)-RP.Blues(:,4))/RP.dT;
+
+        RP.BluesSpeed(abs(azi(angV(Blues(:,2)-RP.Blues(:,2),Blues(:,3)-RP.Blues(:,3))-RP.Blues(:,4)))>pi/2)=...
+            -RP.BluesSpeed(abs(azi(angV(Blues(:,2)-RP.Blues(:,2),Blues(:,3)-RP.Blues(:,3))-RP.Blues(:,4)))>pi/2);
+
+        RP.BluesAngSpeed(or(Blues(:,1)==0,RP.Blues(:,1)==0))=0;
+        RP.BluesSpeed(or(Blues(:,1)==0,RP.Blues(:,1)==0))=0;
+    end
 else
     RP.BluesAngSpeed=zeros(size(Blues,1),1);
     RP.BluesSpeed=zeros(size(Blues,1),1);
@@ -192,7 +207,7 @@ for i=1:size(Blues,1)
         RP.Blue(i).Nrul=RP.pair.Blues(i);
         RP.Blue(i).rul=emptyrul;
         RP.Blue(i).KickAng=0;
-%        RP.Blue(i).com={i,'Y'};
+        RP.Blue(i).id=i;
 end
 for i=1:size(Yellows,1)
         RP.Yellow(i).I=Yellows(i,1);
@@ -205,7 +220,7 @@ for i=1:size(Yellows,1)
         RP.Yellow(i).Nrul=RP.pair.Yellows(i);
         RP.Yellow(i).rul=emptyrul;
         RP.Yellow(i).KickAng=0;
-%        RP.Yellow(i).com={i,'Y'};
+        RP.Yellow(i).id=size(Blues,1)+i;
 end
 % --- RP.Pause ---
 if ~isfield(RP,'Pause')    

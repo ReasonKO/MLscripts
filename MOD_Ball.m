@@ -51,9 +51,9 @@ end
 %% Mooved
 if (Balls(1) && (Modul.Ball.V>0))
     Balls(:)=[Balls(1),...
-        Balls(2)+Modul.Ball.V*Modul.dT*cos(Modul.Ball.Ang),...
-        Balls(3)+Modul.Ball.V*Modul.dT*sin(Modul.Ball.Ang)];
-    Modul.Ball.V=max(0,Modul.Ball.V-Modul.dT*4*Modul.Ball.V/100-Modul.dT*2*(Modul.Ball.V>0)); 
+        Balls(2)+Modul.vSpeed*Modul.Ball.V*Modul.dT*cos(Modul.Ball.Ang),...
+        Balls(3)+Modul.vSpeed*Modul.Ball.V*Modul.dT*sin(Modul.Ball.Ang)];
+    Modul.Ball.V=max(0,Modul.Ball.V-Modul.vSpeed*Modul.dT*4*Modul.Ball.V/100-Modul.vSpeed*Modul.dT*2*(Modul.Ball.V>0)); 
 end
 %% ---------------------------------
 if 0 && ((abs(Balls(2))>3000)||(abs(Balls(3))>2000)||abs(Balls(2)>0))%||(BallsV==0))

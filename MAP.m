@@ -39,6 +39,11 @@ for MAP_i=1:size(Blues,1)
             set(MAP_PAR.viz_Blues{MAP_i}(1),'xdata',viz_x,'ydata',viz_y);
             set(MAP_PAR.viz_Blues{MAP_i}(3),'Position',[Blues(MAP_i,2)+PAR.RobotSize/2,Blues(MAP_i,3)+PAR.RobotSize/2]);   
         end
+    else
+        if ~(isempty(MAP_PAR.viz_Blues{MAP_i}))
+            set(MAP_PAR.viz_Blues{MAP_i}(1),'xdata',NaN,'ydata',NaN);
+            set(MAP_PAR.viz_Blues{MAP_i}(3),'Position',[inf,inf]);   
+        end
     end
 end    
 for MAP_i=1:size(Yellows,1)
@@ -54,6 +59,11 @@ for MAP_i=1:size(Yellows,1)
         else                        
             set(MAP_PAR.viz_Yellows{MAP_i}(1),'xdata',viz_x,'ydata',viz_y);
             set(MAP_PAR.viz_Yellows{MAP_i}(3),'Position',[Yellows(MAP_i,2)+PAR.RobotSize/2,Yellows(MAP_i,3)+PAR.RobotSize/2]);   
+        end
+    else
+        if ~(isempty(MAP_PAR.viz_Yellows{MAP_i}))
+            set(MAP_PAR.viz_Yellows{MAP_i}(1),'xdata',NaN,'ydata',NaN);
+            set(MAP_PAR.viz_Yellows{MAP_i}(3),'Position',[inf,inf]);   
         end
     end
 end

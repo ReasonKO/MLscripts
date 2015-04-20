@@ -13,8 +13,8 @@ viz=Modul.viz;
 treckcolor=Modul.treckcolor;
 
 %%
-Left=Rul(1);
-Right=Rul(2);
+Left=Rul(1)*Modul.vSpeed;
+Right=Rul(2)*Modul.vSpeed;
 
 if (Left==Right)
     Xn=X+dT*Left*[cos(Xang),sin(Xang)];

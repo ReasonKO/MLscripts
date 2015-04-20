@@ -39,6 +39,9 @@ if isstruct(X)
     Xang=agent.ang;
     X=agent.z;
 end
+if size(Opponent,2)==4
+    Opponent=Opponent(Opponent(:,1)>0,2:3);
+end    
 %% Pars
 Ubreal=(Right-Left)/200;
 Vreal=(Right+Left)/200;

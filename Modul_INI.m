@@ -6,8 +6,9 @@ mainHeader();
 global Modul Blues Yellows Balls Rules;
 if isempty(Modul)    
     Modul.Tend=30000; %Время выполнения моделирования
-    Modul.dT=0.3;    %Шаг дискретизации
-    Modul.Delay=0.2;   %Задержка управления в шагах дискретизации
+    Modul.dT=0.1;    %Шаг дискретизации
+    Modul.Delay=0.05;   %Задержка управления в шагах дискретизации
+    Modul.vSpeed=7;    %Множитель линейной скорости роботов
     Modul.l_wheel=100; %Размер робота
     Modul.T=0;         %Время выполнения программы 
     Modul.N=0;         %Номер шага программы  

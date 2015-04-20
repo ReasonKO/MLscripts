@@ -18,6 +18,9 @@ end
 if (nargin<6)
     ML=L;
 end
+if size(Opponents,2)==4
+    Opponents=Opponents(Opponents(:,1)>0,2:3);
+end    
 X=X-B;
 T=[cos(Bang),sin(Bang);-sin(Bang),cos(Bang)];
 X=(T*[X(1);X(2)])';

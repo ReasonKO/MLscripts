@@ -20,8 +20,9 @@ if (isstruct(Xagent))
 else
     agent=[];
 end
+
 TrAv_WorkTime=tic();
-show=1;
+show=0;
 depth=10;%4
 MAX_WEIGHT=150000;
 MAX_FF=1000;
@@ -33,6 +34,15 @@ end
 if (nargin==7)
     BallDangArea=0;
 end  
+if isempty(algN)
+    if isempty(agent)
+        error('algN & agent is empty');
+    end
+    algN=agent.id;
+end
+if size(Opponent,2)==4
+    Opponent=Opponent(Opponent(:,1)>0,2:3);
+end    
 C=Ball-C_dist*[cos(Cang),sin(Cang)];
 %% ALR{N} PAR
 global trackavoi
