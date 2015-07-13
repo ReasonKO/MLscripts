@@ -15,6 +15,10 @@ if (nargin==3)
     B=Xang;
     Xang=Agent.ang;
 end
+if isstruct(B)
+    Ball=B;
+    B=Ball.z;
+end
 X=rotV(X,pi/2);
 Xang=Xang+pi/2;
 B=rotV(B,pi/2);

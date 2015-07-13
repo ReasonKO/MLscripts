@@ -1,22 +1,26 @@
+function INIPosition()
 % Инициализация начальных позиций
 % [1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]]
 global Blues Yellows Balls PAR
-Balls(:)=[1,1900,00];
+    Balls=zeros(1,3);
+    Blues=zeros(12,4);
+    Yellows=zeros(12,4);
+%% ==============================================
+Balls(:)=[1,0,0];
 
-Blues(1,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
+for i=1:5
+    Blues(i,:)=randposition();
+    Yellows(i,:)=randposition();
+end
 
-Blues(10,:)=[1,500,-1000,-pi];
-Blues(9,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-Blues(4,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-
-Yellows(1,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-
-Yellows(4,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-Yellows(5,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-Yellows(10,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-Yellows(12,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-Yellows(6,:)=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
-
+save lastINIPosition.mat
 fprintf('Начальные позиции агентов:\n');
 Blues
 Yellows
+    function re=randposition()        
+        re=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];
+        while(~CollisionControl())
+            re=[1,(rand(1,3)-0.5).*[PAR.MAP_Y,PAR.MAP_Y,2*pi]];            
+        end
+    end
+end

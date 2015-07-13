@@ -1,18 +1,8 @@
 clear all
 close all
-pcode main.m
 clc
-%% Global INI
-global Rules;    Rules=zeros(12,7);
-global Balls;    Balls=zeros(1,3);
-global Blues;    Blues=zeros(12,4);
-global Yellows;  Yellows=zeros(12,4);
-
-%% Инициализация моделирования
+%% Инициализация
 Modul_INI();
-%% INI начальных позиций
-INIStartPosition();
-%==========================================================================
 %% Цикл
 while(Modul.T+Modul.dT<=Modul.Tend )    
     Rules=zeros(12,7);
@@ -73,7 +63,6 @@ while(Modul.T+Modul.dT<=Modul.Tend )
     end
     %Modul.Rules_Delay{floor(Modul.Delay/Modul.dT)}=Rules_Delay_S;
     
-    MOD(Modul.dT-rem(Modul.Delay,Modul.dT))
     %% Передача управления роботу
     % пример: MOD_NGO(9,3,'Y'); (Для реализаций Rule в обход RP)
     % 9 - номер цвета робота, 3 - номер управления робота, Y - из жёлиых. 

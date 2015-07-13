@@ -9,7 +9,13 @@
 % BallDangArea - расстояние безопасного объезда цели..
 function [Left,Right] = TrackAvoidance(Xagent,Xang,Ball,Cang,algN,Opponent,...
 C_dist,BallDangArea)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Настраиваемые параметры
+Stop_Range=300;
+show=0;
+depth=4;%4
+MAX_WEIGHT=150000;
+%MAX_FF=1000;
+%% Полиморфизм
 if (isstruct(Xagent))
     if ~isempty(Xang)
         warning('use Xang=[] if Xagent is struct');
@@ -20,13 +26,6 @@ if (isstruct(Xagent))
 else
     agent=[];
 end
-
-TrAv_WorkTime=tic();
-show=0;
-depth=10;%4
-MAX_WEIGHT=150000;
-MAX_FF=1000;
-
 if (nargin==6)
     BallDangArea=4;
     C_dist=100;
@@ -42,9 +41,11 @@ if isempty(algN)
 end
 if size(Opponent,2)==4
     Opponent=Opponent(Opponent(:,1)>0,2:3);
-end    
-C=Ball-C_dist*[cos(Cang),sin(Cang)];
+end
+Opponent=Opponent(or(Opponent(:,1)-Xagent(1)~=0,Opponent(:,2)-Xagent(2)~=0),:);
 %% ALR{N} PAR
+TrAv_WorkTime=tic();
+C=Ball-C_dist*[cos(Cang),sin(Cang)];
 global trackavoi
 if isempty(trackavoi) || ~isfield(trackavoi,'weight')
     TrackAvoi_INI();
@@ -64,8 +65,9 @@ algK=trackavoi.PAR.algK;
 algStep=trackavoi.PAR.algStep;
 d=trackavoi.PAR.d;
 if ((length(trackavoi.weight)>=algN) ...
-    &&(size(trackavoi.weight{algN},1)==szY) ...
-    &&(size(trackavoi.weight{algN},2)==szX))
+    && ~isempty(trackavoi.weight{algN})...
+    && size(trackavoi.weight{algN},1)==szY ...
+    && size(trackavoi.weight{algN},2)==szX)
     weight=trackavoi.weight{algN};
 else
     weight=ones(szY,szX)*inf;
@@ -135,20 +137,36 @@ for j=1:depth
     weight([1,2,end-1,end],:)=MAX_WEIGHT;
     weight(:,[1,2,end-1,end])=MAX_WEIGHT;
 %    weight([round(szX/4)],[round(szY/2)])=10000;
-%   weight(:,[round(szY/2)]+[3:5])=100000;
+%   weight(:,[round(szY/2)]+[3:5])=1000000;
 
 end
+
+%% test_results
+% Xtrack(1,:)=Xagent;
+% MAX_LENGTH=500;
+% for tracklen=1:MAX_LENGTH
+%     Xtrack=Xtrack+sdvig(R(Z(Xtrack,X,Y)),:);
+%     if weight(Z(Xtrack,X,Y))==0
+%         break;
+%     end    
+% end
+%% SaveResults
+%if 1 %tracklen<MAX_LENGTH
+    trackavoi.weight{algN}=weight;
+%else
+%    trackavoi.weight{algN}=[];
+%end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ReControl
-if (~isnan(weight(Z(Xagent,X,Y))) && weight(Z(Xagent,X,Y))<=MAX_WEIGHT) 
+if (~isnan(weight(Z(Xagent,X,Y))) && weight(Z(Xagent,X,Y))<=MAX_WEIGHT)% && tracklen<MAX_LENGTH) 
     dang=sdvig(R(Z(Xagent,X,Y)),:);
     Ub=azi(angV(dang)-Xang)/pi;
     V=1-abs(Ub);
-    V=V*min(300,weight(Z(Xagent,X,Y)))/300;
+    V=V*min(Stop_Range,weight(Z(Xagent,X,Y)))/Stop_Range;
     Left =100*(V-Ub);
     Right=100*(V+Ub);
 else
-    fprintf('TrackAvoidance: stop=1');
+%    fprintf('TrackAvoidance: stop=1\n');
     Left=0;
     Right=0;
 end
@@ -157,9 +175,6 @@ if isstruct(agent)
     Right=[];
 end
 %toc()
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% SaveResults
-trackavoi.weight{algN}=weight;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% PLOTTING
 if show
@@ -175,9 +190,9 @@ function ShowWeight(Xagent,weight,R,TrAv_WorkTime,algN)
 It=['TrAv_WorkTime=',sprintf('%f',toc(TrAv_WorkTime))];  
 global trackavoi
 if (~isfield(trackavoi.MAP,'algN'))
-    trackavoi.algN=algN;
+    trackavoi.MAP.algN=algN;
 else
-    if (trackavoi.algN~=algN)
+    if (trackavoi.MAP.algN~=algN)
         return
     end
 end
@@ -206,14 +221,14 @@ Y=trackavoi.PAR.Y;
         else
             set(trackavoi.MAP.weight,'zdata',weight-Tmax);
         end
-        colormap(cool)
+        colormap(cool);
 
         Xtrack(1,:)=Xagent;
         for i=1:15
             Xtrack(i+1,:)=Xtrack(i,:)+sdvig(R(Z(Xtrack(i,:),X,Y)),:);
             %rnm=repmat(Xtrack,[size(Opponent,1),1])-Opponent;
             %sqrt(min(rnm(:,1).^2+rnm(:,2).^2));
-        end     
+        end             
         if (~isfield(trackavoi.MAP,'text_stat') || ~ishandle(trackavoi.MAP.text_stat))
             trackavoi.MAP.text_stat=text(min(min(X)),max(max(Y))+100,It);
         else

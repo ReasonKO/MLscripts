@@ -26,7 +26,7 @@ for i=1:12
 end
 global Modul;
 if (norm(Rules)==0 && isempty(Modul)) 
-    fprintf('Rules is clear! Use ''PairStart()''.');
+    fprintf('Rules is clear! Use ''pairStart()''.');
 end
 end
 

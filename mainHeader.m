@@ -92,14 +92,17 @@ global PAR;
 if isempty(PAR)
     PAR=struct();
 end
+if ~isfield(PAR,'HALF_FIELD')
+    PAR.HALF_FIELD=0; %0
+end
 if ~isfield(PAR,'MAP_X')
-    PAR.MAP_X=6000; %6
+    PAR.MAP_X=6000; %6000
 end
 if ~isfield(PAR,'MAP_Y')
-    PAR.MAP_Y=4000; %4
+    PAR.MAP_Y=4000; %4000
 end
 if ~isfield(PAR,'KICK_DIST')
-    PAR.KICK_DIST=120;
+    PAR.KICK_DIST=120; %120
 end
 if ~isfield(PAR,'LGate')
     PAR.LGate.X=-PAR.MAP_X/2;
@@ -222,14 +225,12 @@ for i=1:size(Yellows,1)
         RP.Yellow(i).KickAng=0;
         RP.Yellow(i).id=size(Blues,1)+i;
 end
+RP.YELLOWIDMIN=size(Blues,1)+1;
 % --- RP.Pause ---
 if ~isfield(RP,'Pause')    
     RP.Pause=0;
 end
 Pair();
-%if (RP.Pause)
-%    return;
-%end
 %% re
 RPre=RP;
 end

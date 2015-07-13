@@ -29,7 +29,7 @@ end
 %Cx=G(1)%-400*sign(G(1));
 %пиналка на левой стороне!!!
 %% Параметры
-lgate=500; %Ширина ворот.
+lgate=1000; %Ширина ворот.
 DefDist=300; %Глубина ворот.
 XaccelL=150;
 YaccelL=50;
@@ -95,12 +95,12 @@ V=V_*RT*(1-abs(Ub));
 Kick=0;    
 if (~isempty(Agent))% && ~isempty(Ball))    
     %Agent.KickAng
-    if (norm(B-X)<200 && norm(C-X)<100) 
-        norm(B-X)
+    if (norm(B-X)<400 && norm(C-X)<100 && abs(X(1))>abs(B(1))) 
         Ub=azi(angV(B-X)-Xang-Agent.KickAng)/pi;    
         V=0.0;
         if abs(azi(angV(B-X)-Xang-Agent.KickAng))<pi/4
            Kick=1;
+           V=0.1;
         end
     end
 end
