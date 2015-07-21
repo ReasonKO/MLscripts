@@ -38,9 +38,11 @@ else
     Left=rul(1);
     Right=rul(2);
 end
-if size(Opponent,2)==4
-    Opponent=Opponent(Opponent(:,1)>0,2:3);
+if size(Opponent,2)==4    
+    Opponent=Opponent(Opponent(:,1)>0,2:3);    
 end    
+or(Opponent(:,1)~=X(1),Opponent(:,2)~=X(2))
+Opponent=Opponent(or(Opponent(:,1)~=X(1),Opponent(:,2)~=X(2)));
 %% Pars
 Ubreal=(Right-Left)/200;
 Vreal=(Right+Left)/200;
