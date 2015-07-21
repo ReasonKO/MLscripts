@@ -1,17 +1,17 @@
 %[Left,Right]=GoToPoint(X,Xang,C,Cang,StopDistance);
-%[Left,Right]=GoToPoint(X,Xang,C,Cang), StopDistance=200;
-%[Left,Right]=GoToPoint(X,Xang,C), Сang=Xang, StopDistance=0;
+%[Left,Right]=GoToPoint(X,Xang,C,Cang), StopDistance=PAR.RobotSize/2;
+%[Left,Right]=GoToPoint(X,Xang,C), Сang=Xang, StopDistance=PAR.RobotSize/2;
 %[rul]=GoToPoint(Agent,C,Cang,StopDistance);
-%[rul]=GoToPoint(Agent,C,Cang), StopDistance=200;
-%[rul]=GoToPoint(Agent,C), Сang=agent.ang, StopDistance=0;
+%[rul]=GoToPoint(Agent,C,Cang), StopDistance=PAR.RobotSize/2;
+%[rul]=GoToPoint(Agent,C), Сang=agent.ang, StopDistance=PAR.RobotSize/2;
 %
 %Движение робота Agent(или координатой X и углом Xang)  к точке С.
 %Остановка в окрестности StopDistance и разворот на угол Сang. 
 function [Left,Right]=GoToPoint(X,Xang,C,Cang,StopDistance)
-%% Параметры по умолчанию
+%% Полиморфизм
+global PAR
 if (isstruct(X))
     agent=X;
-    Struct_Input=true;
     if (nargin==4)
         StopDistance=Cang;
         Cang=C;
@@ -20,30 +20,29 @@ if (isstruct(X))
         X=agent.z;
     end    
     if (nargin==3)
-        StopDistance=200;
+        StopDistance=PAR.RobotSize/2;
         Cang=C;
         C=Xang;
         Xang=agent.ang;
         X=agent.z;
     end
     if (nargin==2)
-        StopDistance=0;
+        StopDistance=PAR.RobotSize/2;
         Cang=agent.ang;
         C=Xang;
         Xang=agent.ang;
         X=agent.z;
     end
 else
-    Struct_Input=false;
+    agent=[];
     if (nargin==4)
-        StopDistance=200;
+        StopDistance=PAR.RobotSize/2;
     end    
     if (nargin==3)   
-        StopDistance=0;
+        StopDistance=PAR.RobotSize/2;
         Cang=Xang;
     end
 end
-%% верификация данных
 X=reshape(X,1,2);
 C=reshape(C,1,2);
 %% Вычисление скоростей
@@ -60,7 +59,7 @@ end
 Left=100*(V-Ub);
 Right=100*(V+Ub);
 %% re
-if (Struct_Input)
+if (~isempty(agent))
     Left=Crul(Left,Right,0,0,0);
     Right=NaN;
 end

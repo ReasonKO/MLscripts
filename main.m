@@ -1,5 +1,5 @@
 %% MAIN START HEADER
-global Blues Yellows Balls Rules RP PAR
+global Blues Yellows Balls Rules RP PAR Modul
 mainHeader();
 MAP(); %Отрисовка карты.
 if (RP.Pause) %Выход.
@@ -9,33 +9,27 @@ zMain_End=RP.zMain_End;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% CONTRIL BLOCK
-% -----------------PAR----------------
-PAR.MAP_Y=3000;
-PAR.MAP_X=6000;
-PAR.KICK_DIST=150;
 PAR.HALF_FIELD=0;
-PAR.RobotSize=200;
-%% -----------------------------------
-%RP.Yellow(6).rul=Crul(50,50,0,0,0);
-%RP.Yellow(6).rul=GoToPoint(RP.Yellow(6),[100,-100]);
-%RP.Yellow(6).rul=RegControl(RP.Yellow(6));
-CollisionControl();
+PAR.MAP_X=4000;
+PAR.MAP_Y=3000;
 
-RP.Yellow(1).rul=SCRIPT_GoalKeeper(RP.Yellow(1),RP.Ball,[2800,0]);
-RP.Yellow(2).rul=SCRIPT_Atack(RP.Yellow(2),RP.Ball,[-3000,0],[500,-500]);
-RP.Yellow(3).rul=SCRIPT_Atack(RP.Yellow(3),RP.Ball,[-3000,0],[-500,500]);
-%RP.Yellow(4).rul=SCRIPT_Atack(RP.Yellow(4),RP.Ball,[-3000,0],[500,-500]);
-%RP.Yellow(5).rul=SCRIPT_Atack(RP.Yellow(5),RP.Ball,[-3000,0],[500,-500]);
+%% CONTRIL BLOCK
+RP.Yellow(1).rul=GoToPoint(RP.Yellow(1),[500,0]);
 
-RP.Blue(1).rul=SCRIPT_GoalKeeper(RP.Blue(1),RP.Ball,[-2800,0]);
-RP.Blue(2).rul=SCRIPT_Atack(RP.Blue(2),RP.Ball,[3000,0],[-500,-500]);
-RP.Blue(3).rul=SCRIPT_Atack(RP.Blue(3),RP.Ball,[3000,0],[500,500]);
-%RP.Blue(4).rul=SCRIPT_Atack(RP.Blue(4),RP.Ball,[3000,0],[500,-500]);
-%RP.Blue(5).rul=SCRIPT_Atack(RP.Blue(5),RP.Ball,[3000,0],[500,-500]);
+temp=RP.Yellow(1).rul;
+RP.Yellow(1).rul=ReactAvoidance(RP.Yellow(1),[Blues,Yellows]);
+MAP_addtext(max(RP.Yellow(1).rul.left,RP.Yellow(1).rul.right),'max=%f');
+MAP_addtext(RP.Yellow(1).rul.left-temp.left,'| %4.0f %4.0f');
+MAP_addtext(RP.Yellow(1).rul.right-temp.right,'| %4.0f %4.0f');
 
+plot(PAR.RobotSize*sin(-pi:0.1:pi),PAR.RobotSize*cos(-pi:0.1:pi));
+plot((PAR.RobotSize+150)*sin(-pi:0.1:pi),(PAR.RobotSize+150)*cos(-pi:0.1:pi));
+plot((PAR.RobotSize+450)*sin(-pi:0.1:pi),(PAR.RobotSize+450)*cos(-pi:0.1:pi));
 
-
+%RP.Blue(2).Nrul=1;
+%G=Blues(10,2:3);
+%RP.Blue(2).rul=GoToPoint(RP.Blue(2),[-1000,500]);
+%RP.Blue(2).rul=SCRIPT_Atack(RP.Blue(2),RP.Ball,G,[-1000,0],[Blues;Yellows]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

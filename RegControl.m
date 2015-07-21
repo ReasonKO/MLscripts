@@ -12,7 +12,7 @@ rul.left(abs(rul.left)>100)=sign(rul.left)*100;
 rul.right(abs(rul.right)>100)=sign(rul.right)*100;
 global Yellows Blues
 %Реактивныцй обход близких препятствий
-rul=ReactAvoidance(rul,agent,[Yellows;Blues]);
+rul=ReactAvoidance(agent,rul,[Yellows;Blues]);
 %Отталкивание от стенок
 rul=BoardControl(agent,rul);
 %Компенсация мощностей моторчиков

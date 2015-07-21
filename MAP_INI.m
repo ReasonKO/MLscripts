@@ -10,8 +10,11 @@ end
 global Blues Yellows MAP_PAR
 %clear MAP_PAR;  
 MAP_PAR.MAP_H=figure(100);
+
 clf
 hold on;grid on;
+
+MAP_PAR.viz_text=[];
 
 axis equal
 axis([-PAR.MAP_X/2-150,PAR.MAP_X/2+150,-PAR.MAP_Y/2-100,PAR.MAP_Y/2+100]);

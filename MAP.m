@@ -78,6 +78,24 @@ if (Balls(1)>0)
         set(MAP_PAR.viz_Balls,'xdata',viz_x,'ydata',viz_y);
     end
 end
+
+if isfield(MAP_PAR,'text') 
+    if ~isfield(MAP_PAR,'viz_text') || isempty(MAP_PAR.viz_text) 
+        if ~isempty(MAP_PAR.text)        
+            %MAP_PAR.viz_text=text(-PAR.MAP_X/2,-PAR.MAP_Y/2,MAP_PAR.text);    
+            MAP_PAR.viz_text=title(MAP_PAR.text);    
+        end
+    else
+        if ~isempty(MAP_PAR.text)
+            set(MAP_PAR.viz_text,'Visible','on');        
+            set(MAP_PAR.viz_text,'String',MAP_PAR.text);
+        else
+            set(MAP_PAR.viz_text,'Visible','off');        
+        end
+    end
+    MAP_PAR.text=[];
+end
+    
 drawnow
 %% END
 end
