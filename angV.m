@@ -1,13 +1,12 @@
-%angV = angV(Z)
-%angV = angV(re,im)
+%angV = angV(z); z=[x,y];
+%angV = angV(x,y);
 %Угол направления вектора. 
-%Аналог angle(re+i*im) 
+%Аналог angle(re+1i.*im);
 
-function angV = angV(re,im)
-if (nargin==1)
-    im=re(2);
-    re=re(1);
+function angV = angV(x,y)
+if (nargin==1 && length(x)==2)
+    angV=atan2(x(2), x(1));
+else
+    angV=atan2(y, x);
 end
-
-angV=angle(re+1i.*im);
 end

@@ -19,6 +19,7 @@ $RECYCLE.BIN/
 
 *test.m
 *.mat
+*old.m
 # =========================
 # Operating System Files
 # =========================

@@ -1,6 +1,6 @@
 global RP Blues Yellows Balls Rules
 %% -----------------------------------------
-Stady=2;
+Stady=3;
 global DiagnosticShow
 if isempty(DiagnosticShow)
     DiagnosticShow=false;
@@ -8,14 +8,14 @@ end
 
 DiagnosticShow=true;
 
-agent=RP.Yellow(6);
-Nrul=3;
+agent=RP.Yellow(12);
+Nrul=1;
 % if (agent.I==0)
 %     return
 % end
+global TEST_viz
 
 if (Stady==1)
-    global TEST_viz
     CamData=agent.z;
     ang=agent.ang;
     
@@ -64,8 +64,8 @@ end
 
 global Diagnostic_data;
 if (Stady==2)
-    K=-0.04;
-    delay=0.15;
+    K=-0.035;
+    delay=0.3;
     if RP.T<2.5
         USpeed=0;      
     else
@@ -100,8 +100,8 @@ if (Stady==2)
 end
 
 if (Stady==3)
-    K=4.5;
-    delay=0.18;
+    K=5.0;
+    delay=0.3;
     if RP.T<2.5
         USpeed=0;      
     else
