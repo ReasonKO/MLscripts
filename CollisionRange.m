@@ -16,6 +16,12 @@ end
 if size(Opponents,2)>=3
     Opponents=Opponents(Opponents(:,1)>0,2:3);
 end 
+if isempty(Opponents)
+    range=inf;
+    rangeL=inf;
+    reNorm=inf;
+    return
+end
 Opponents_old=Opponents;
 Opponents=Opponents-ones(size(Opponents,1),1)*X;
 RotM=[cos(Xang),-sin(Xang);sin(Xang),cos(Xang)];

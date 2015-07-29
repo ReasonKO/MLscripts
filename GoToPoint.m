@@ -7,6 +7,8 @@
 %
 %Движение робота Agent(или координатой X и углом Xang)  к точке С.
 %Остановка в окрестности StopDistance и разворот на угол Сang. 
+%Если StopDistance - вектор [L1,L2], то при подъезде к цели от расстояния 
+%L1 до L2 будет происходить плавное замедление скорости. 
 function [Left,Right]=GoToPoint(X,Xang,C,Cang,StopDistance)
 %% Полиморфизм
 global PAR
@@ -43,14 +45,20 @@ else
         Cang=Xang;
     end
 end
+if isempty(Cang)
+    Cang=Xang;
+end
 X=reshape(X,1,2);
 C=reshape(C,1,2);
 %% Вычисление скоростей
 %Ub - угловая скорость.
 %V - линейная скорость.
-if (norm(C-X)>StopDistance)
+if (norm(C-X)>min(StopDistance))
     Ub=azi(angV(C-X)-Xang)/pi; 
     V=1-abs(Ub);
+    if length(StopDistance)>1
+        V=V*min(1,max(0.1*(min(StopDistance)>0),(norm(C-X)-min(StopDistance))/(max(StopDistance)-min(StopDistance))));
+    end
 else
     Ub=azi(Cang-Xang)/pi;
     V=0;

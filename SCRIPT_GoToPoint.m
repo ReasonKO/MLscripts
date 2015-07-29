@@ -5,7 +5,7 @@ global Blues Yellows;
 if (nargin==2)
     Opponent=[Blues;Yellows];
 end
-if (agent.I)
+if (agent.I>0)
     rul=TrackAvoidance(agent,[],C,agent.ang,[],Opponent,0,0); %Обходим препятствия и едем к ST  
     rul=RegControl(agent,rul);
 else

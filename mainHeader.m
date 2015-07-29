@@ -122,6 +122,12 @@ end
 if ~isfield(PAR,'RobotArm')
     PAR.RobotArm=100;
 end
+if ~isfield(PAR,'DELAY')
+    PAR.DELAY=0.0;
+end
+if ~isfield(PAR,'WhellR')
+    PAR.WhellR=5;
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %--- time ---
 global Modul;
@@ -132,59 +138,85 @@ else
 end
 %RP.PAR=PAR;
 % RP.T
+% if isfield(RP,'T')
+%     if isempty(Modul)
+%         RP.dT=toc(RP.T_timerH);
+%     else
+%         RP.dT=Modul.T-RP.T;%Modul.dT;
+%     end
+%     RP.T_timerH=tic();
+%     RP.T=RP.T+RP.dT;
+% else
+%     RP.dT=0;
+%     RP.T_timerH=tic();
+%     RP.T=0;
+% end
 if isfield(RP,'T')
+    oldT=RP.T;
     if isempty(Modul)
-        RP.dT=toc(RP.T_timerH);
+        RP.T=toc(RP.T_timerH);
     else
-        RP.dT=Modul.T-RP.T;%Modul.dT;
+        RP.T=Modul.T;%Modul.dT;
     end
-    RP.T_timerH=tic();
-    RP.T=RP.T+RP.dT;
+    RP.dT=RP.T-oldT;
 else
-    RP.dT=0;
+    RP.dT=0.03;
     RP.T_timerH=tic();
     RP.T=0;
 end
+
 %--- speed ---
 % RP.YellowsSpeed
+if ~isfield(RP,'YellowsSpeed')
+    RP.YellowsSpeed=zeros(size(Yellows,1),1);
+    RP.YellowsAngSpeed=zeros(size(Yellows,1),1);
+    RP.BluesSpeed=zeros(size(Blues,1),1);
+    RP.BluesAngSpeed=zeros(size(Blues,1),1);
+    RP.BallsSpeed=zeros(size(Balls,1),1);
+    RP.Ballsang=0;
+end
+
 if isfield(RP,'Yellows') && norm(size(Yellows)-size(RP.Yellows))==0    
     if (RP.dT>0)
-        RP.YellowsSpeed=sqrt((Yellows(:,2)-RP.Yellows(:,2)).^2+(Yellows(:,3)-RP.Yellows(:,3)).^2)/RP.dT;
+        oldYellowsSpeed=RP.YellowsSpeed;
+        oldYellowsAngSpeed=RP.YellowsAngSpeed;
+        RP.YellowsSpeed=sqrt((Yellows(:,2)-RP.Yellows(:,2)).^2+(Yellows(:,3)-RP.Yellows(:,3)).^2)/RP.dT;    
         RP.YellowsAngSpeed=azi(Yellows(:,4)-RP.Yellows(:,4))/RP.dT;
+
         RP.YellowsSpeed(abs(azi(angV(Yellows(:,2)-RP.Yellows(:,2),Yellows(:,3)-RP.Yellows(:,3))-RP.Yellows(:,4)))>pi/2)=...
             -RP.YellowsSpeed(abs(azi(angV(Yellows(:,2)-RP.Yellows(:,2),Yellows(:,3)-RP.Yellows(:,3))-RP.Yellows(:,4)))>pi/2);
-
-        RP.YellowsSpeed(or(Yellows(:,1)==0,RP.Yellows(:,1)==0))=0;
-        RP.YellowsAngSpeed(or(Yellows(:,1)==0,RP.Yellows(:,1)==0))=0;
+        
+        NotActiv=or(Yellows(:,1)==0,RP.Yellows(:,1)==0);
+        RP.YellowsAngSpeed(NotActiv)=oldYellowsAngSpeed(NotActiv);        
+        RP.YellowsSpeed(NotActiv)=oldYellowsSpeed(NotActiv);        
     end
-else
-    RP.YellowsAngSpeed=zeros(size(Yellows,1),1);
-    RP.YellowsSpeed=zeros(size(Yellows,1),1);
 end
 % RP.BluesSpeed
 if isfield(RP,'Blues') && norm(size(Blues)-size(RP.Blues))==0
     if (RP.dT>0)
+        oldBluesSpeed=RP.BluesSpeed;
+        oldBluesAngSpeed=RP.BluesAngSpeed;
         RP.BluesSpeed=sqrt((Blues(:,2)-RP.Blues(:,2)).^2+(Blues(:,3)-RP.Blues(:,3)).^2)/RP.dT;    
         RP.BluesAngSpeed=azi(Blues(:,4)-RP.Blues(:,4))/RP.dT;
 
         RP.BluesSpeed(abs(azi(angV(Blues(:,2)-RP.Blues(:,2),Blues(:,3)-RP.Blues(:,3))-RP.Blues(:,4)))>pi/2)=...
             -RP.BluesSpeed(abs(azi(angV(Blues(:,2)-RP.Blues(:,2),Blues(:,3)-RP.Blues(:,3))-RP.Blues(:,4)))>pi/2);
-
-        RP.BluesAngSpeed(or(Blues(:,1)==0,RP.Blues(:,1)==0))=0;
-        RP.BluesSpeed(or(Blues(:,1)==0,RP.Blues(:,1)==0))=0;
+        
+        NotActiv=or(Blues(:,1)==0,RP.Blues(:,1)==0);
+        RP.BluesAngSpeed(NotActiv)=oldBluesAngSpeed(NotActiv);        
+        RP.BluesSpeed(NotActiv)=oldBluesSpeed(NotActiv);
     end
-else
-    RP.BluesAngSpeed=zeros(size(Blues,1),1);
-    RP.BluesSpeed=zeros(size(Blues,1),1);
 end
 % RP.BallsSpeed
+
 if isfield(RP,'Balls') && norm(size(Balls)-size(RP.Balls))==0
-    RP.BallsSpeed=sqrt((Balls(2)-RP.Balls(2)).^2+(Balls(3)-RP.Balls(3)).^2)/RP.dT;
-    RP.Ballsang=angV(Balls(2:3)-RP.Balls(2:3));
-else
-    RP.BallsSpeed=zeros(size(Balls,1),1);
-    RP.Ballsang=0;
+    activ=and(Balls(:,1)~=0,RP.Balls(:,1)~=0);
+    RP.BallsSpeed(activ)=sqrt((Balls(2)-RP.Balls(2)).^2+(Balls(3)-RP.Balls(3)).^2)/RP.dT;    
+    RP.Ballsang(activ)=angV(Balls(2:3)-RP.Balls(2:3));
 end
+
+HeaderFilter();
+
 %--- Save ---
 RP.Blues=Blues;
 RP.Yellows=Yellows;
@@ -197,33 +229,81 @@ RP.Ball.y=Balls(3);
 RP.Ball.z=Balls(2:3);
 RP.Ball.ang=RP.Ballsang;
 RP.Ball.v=RP.BallsSpeed;
-
+RP.Ball.id=100;
+%% Координаты роботов
+if ~isfield(RP,'Extrap')
+    RP.Extrap.ON=1; %Включена ли дополнительная экстраполяция роботов
+                    %При этом если робот не найден, 
+                    %но был замечен менее RP.Extrap.Time(1 секунды) назад
+                    %Номеру найденой камеры присваивается 3
+	RP.Extrap.Time=1;
+    for i=1:size(Blues,1)
+        RP.Extrap.B{i}.T=inf;
+    end
+    for i=1:size(Yellows,1)
+        RP.Extrap.Y{i}.T=inf;
+    end
+end
 
 for i=1:size(Blues,1)
         RP.Blue(i).I=Blues(i,1);
-        RP.Blue(i).x=Blues(i,2);
+        RP.Blue(i).z=Blues(i,2:3);        
+        RP.Blue(i).x=Blues(i,2);       
         RP.Blue(i).y=Blues(i,3);
-        RP.Blue(i).z=Blues(i,2:3);
         RP.Blue(i).ang=Blues(i,4);
         RP.Blue(i).v=RP.BluesSpeed(i);
-        RP.Blue(i).u=RP.BluesAngSpeed(i);
+        RP.Blue(i).u=RP.BluesAngSpeed(i);                    
+        RP.Blue(i).id=i;
         RP.Blue(i).Nrul=RP.pair.Blues(i);
         RP.Blue(i).rul=emptyrul;
         RP.Blue(i).KickAng=0;
-        RP.Blue(i).id=i;
+
+        if (RP.Blue(i).I)
+            RP.Extrap.B{i}.T=0;
+            RP.Extrap.B{i}.Last=RP.Blue(i);
+        else
+            if (RP.Extrap.B{i}.T<RP.Extrap.Time)
+                RP.Extrap.B{i}.T=RP.Extrap.B{i}.T+RP.dT;
+                agent=extrap(RP.Extrap.B{i}.Last,RP.Extrap.B{i}.T);
+                RP.Blue(i).z=agent.z;
+                RP.Blue(i).ang=agent.ang;            
+                RP.Blue(i).x=agent.x;       
+                RP.Blue(i).y=agent.y;
+                if (RP.Extrap.ON) 
+                    RP.Blue(i).I=3;
+                end
+            end
+        end
 end
 for i=1:size(Yellows,1)
         RP.Yellow(i).I=Yellows(i,1);
+        RP.Yellow(i).z=Yellows(i,2:3);
         RP.Yellow(i).x=Yellows(i,2);
         RP.Yellow(i).y=Yellows(i,3);
-        RP.Yellow(i).z=Yellows(i,2:3);
-        RP.Yellow(i).ang=Yellows(i,4);
+        RP.Yellow(i).ang=Yellows(i,4);            
         RP.Yellow(i).v=RP.YellowsSpeed(i);
         RP.Yellow(i).u=RP.YellowsAngSpeed(i);        
         RP.Yellow(i).Nrul=RP.pair.Yellows(i);
         RP.Yellow(i).rul=emptyrul;
         RP.Yellow(i).KickAng=0;
         RP.Yellow(i).id=size(Blues,1)+i;
+
+        if (RP.Yellow(i).I)
+            RP.Extrap.Y{i}.T=0;
+            RP.Extrap.Y{i}.Last=RP.Yellow(i);
+        else
+            if (RP.Extrap.Y{i}.T<RP.Extrap.Time)
+                RP.Extrap.Y{i}.T=RP.Extrap.Y{i}.T+RP.dT;
+                agent=extrap(RP.Extrap.Y{i}.Last,RP.Extrap.Y{i}.T);
+                RP.Yellow(i).z=agent.z;
+                RP.Yellow(i).ang=agent.ang;            
+                RP.Yellow(i).x=agent.x;       
+                RP.Yellow(i).y=agent.y;
+                if (RP.Extrap.ON) 
+                    RP.Yellow(i).I=3;
+                end
+            end
+        end
 end
 RP.YELLOWIDMIN=size(Blues,1)+1;
 % --- RP.Pause ---

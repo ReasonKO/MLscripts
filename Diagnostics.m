@@ -1,6 +1,6 @@
 global RP Blues Yellows Balls Rules
 %% -----------------------------------------
-Stady=4;
+Stady=2;
 global DiagnosticShow
 if isempty(DiagnosticShow)
     DiagnosticShow=false;
@@ -8,8 +8,8 @@ end
 
 DiagnosticShow=true;
 
-agent=RP.Yellow(12);
-Nrul=1;
+agent=RP.Yellow(6);
+Nrul=3;
 % if (agent.I==0)
 %     return
 % end
@@ -53,12 +53,12 @@ if (Stady==1)
         end
         Dr2=sum((TEST_viz.Save(:,1)-sum(TEST_viz.Save(:,1))/N).^2+(TEST_viz.Save(:,2)-sum(TEST_viz.Save(:,2))/N).^2)/N;
         Da2=sum((TEST_viz.Save2(:)-sum(TEST_viz.Save2(:))/N).^2)/N;
-    end
-    
     if DiagnosticShow
         fprintf('Среднеквадратическое отклонение координат=%4.2fмм\n',sqrt(Dr2));
         fprintf('Среднеквадратическое отклонение угла=%4.4fрад (%4.2fградусов)\n',sqrt(Da2),sqrt(Da2)/pi*180);    
     end
+    end
+    
     Rule(Nrul,0,0,0,0,0);
 end
 

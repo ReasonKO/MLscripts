@@ -14,10 +14,11 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.asv
-*test.m
 # Windows shortcuts
 *.lnk
 
+*test.m
+*.mat
 # =========================
 # Operating System Files
 # =========================

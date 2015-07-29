@@ -1,3 +1,7 @@
+%MOD(T)
+%Запуск моделирования на время T
+%Выполняет Modul_INI(); для подготовки
+%Затем в цикле:     MOD_All; Rules=zeros(size(Rules)); main;
 function MOD(T)
 Modul_INI();
 global Modul
@@ -8,6 +12,7 @@ while(Modul.T<Modul.Tend )
     %% Инициализация карты
     Modul.N=Modul.N+1;
     MOD_All;
+    Rules=zeros(size(Rules));
     %% Внесение погрешности
     if norm(Modul.MapError)>0
         Modul.Save.Yellows=Yellows;

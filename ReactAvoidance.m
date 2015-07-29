@@ -41,14 +41,14 @@ end
 if size(Opponent,2)==4    
     Opponent=Opponent(Opponent(:,1)>0,2:3);    
 end    
-or(Opponent(:,1)~=X(1),Opponent(:,2)~=X(2))
-Opponent=Opponent(or(Opponent(:,1)~=X(1),Opponent(:,2)~=X(2)));
+Opponent=Opponent(or(Opponent(:,1)~=X(1),Opponent(:,2)~=X(2)),:);
+
 %% Pars
 Ubreal=(Right-Left)/200;
 Vreal=(Right+Left)/200;
-length=RobotSize+len0+Vreal*len1;
+length=RobotSize+0*len0+Vreal*len1;
 if (Vreal<0)
-    [Right,Left] = ReactAvoidance(-Right,-Left,X,Xang+pi,Opponent);    
+    [Right,Left] = ReactAvoidance([X,Xang+pi],[-Right,-Left],Opponent);    
     Right=-Right; Left=-Left; 
     if ~isempty(rul)  
         rul=Crul(Left,Right,rul.kick,0,0);
@@ -65,10 +65,10 @@ dang=0;
 
 %[~,cor]=isSectorClear(X,X+length*[cos(Xang),sin(Xang)],Opponent,Xang,RobotSize+len0);
 %re=isSectorClear(X,X+length*[cos(Xang+Cang),sin(Xang+Cang)],Opponent,Xang+Cang,RobotSize+len0);
-[range0,rangeL,opp1,reNorm]=CollisionRange([X,Xang],Opponent,length,RobotSize);
+[range0,rangeL,~,reNorm]=CollisionRange([X,Xang],Opponent,length,RobotSize);
 range1=CollisionRange([X,Xang+Cang],Opponent,length,RobotSize);
 re=(range1>RobotSize+len0);
-%testshow=1;
+% testshow=0;
 % if testshow
 %      figure(858)
 %      clf
@@ -119,15 +119,14 @@ end
 %Vreal=Vreal+max(0,abs(Ubreal)-0.8);
 Ub=azi(Cang+dang)/pi/CangK;
 Vneed=1-abs(Ub);
-
-MAP_addtext(dang);
+%MAP_addtext(dang);
 
 if (range0<RobotSize+len0)
 %    len2=len0*max(0,[cos(Xang),sin(Xang)]*(X-opp1)'/norm(X-opp1));
     len2=len0*min(1,max(0,rangeL/reNorm));
-    MAP_addtext(len2,'Len2=%f');
+%    MAP_addtext(len2,'Len2=%f');
     Vmax=min(1,max(-1,(reNorm-(RobotSize+len2))/(RobotSize+len2)));        
-    MAP_addtext(Vmax,'Vmax=%f');
+%    MAP_addtext(Vmax,'Vmax=%f');
     Vneed=min(Vneed,Vmax);
 %    if (Vneed<0)
         %Ub=-Ub;
@@ -139,7 +138,7 @@ if (range0<RobotSize+len0)
 end
 V=min(Vneed,Vreal);
 
-MAP_addtext(V);
+%MAP_addtext(V);
 if (reNorm<RobotSize)
     V=V*sign(rangeL);
 end

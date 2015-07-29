@@ -2,9 +2,9 @@
 % Отрисовка поля и игроков.
 % Создание структуры MAP_PAR и перемещение отрисованного ранее.
 
-%% Было ли создано окно?
 global MAP_PAR Blues Yellows Balls RP PAR;
 
+%% Было ли создано окно?
 if (get(0,'CurrentFigure')==100)
 %% BEGIN 
 if isempty(MAP_PAR)

@@ -5,7 +5,7 @@ function rul=SCRIPT_GoalKeeper(agent,Ball,G)
 if (agent.I>0)
     if (norm(agent.z-G)<500)
         rul=GoalKeeper(agent,Ball,G);
-        rul=BoardControl(agent,rul);
+%        rul=BoardControl(agent,rul);
         rul=MoveControl(agent,rul);
     else
         rul=SCRIPT_GoToPoint(agent,G);
