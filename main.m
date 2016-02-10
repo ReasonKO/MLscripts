@@ -7,8 +7,8 @@ if isempty(RP)
 end
 %
 mainHeader();
-MAP(); %Отрисовка карты.
-if (RP.Pause) %Выход.
+MAP(); %ГЋГІГ°ГЁГ±Г®ГўГЄГ  ГЄГ Г°ГІГ».
+if (RP.Pause) %Г‚Г»ГµГ®Г¤.
     return;
 end
 zMain_End=RP.zMain_End;
@@ -52,8 +52,8 @@ PAR.RGate.X=2000;
 %RP.Yellow(11).rul=GoToPoint(RP.Yellow(11),[-500,500]);
 G=[2000,0];
 B=RP.Ball.z;
-%RP.Blue(9).rul=GOcircle(RP.Blue(9),B,angV(G-B));
-RP.Blue(1).rul=NewAlgRot(RP.Blue(1),B,0);
+RP.Blue(1).rul=GOcircle(RP.Blue(1),B,angV(G-B));
+%RP.Blue(1).rul=NewAlgRot(RP.Blue(1),B,0);
 %RP.Blue(9).rul=SCRIPT_Atack(RP.Blue(9),B,G,[-1000,0],Yellows);
 %RP.Blue(9).Nrul=1;
 %if isnan(Blues(1,2))
