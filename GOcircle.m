@@ -24,6 +24,7 @@ KICK_DIST=PAR.KICK_DIST;
 Aang=agent.ang-Cang;
 
 %% Основные направления
+y(y==0)=0.001;
 GCy=(x.^2+y.^2)./(2*y); %Смещение гравитационной составляющей
 angF=azi(angV(-x,GCy-y)-sign(GCy)*( pi/2 )); %Направление фокусировки
 angC=azi(angV(-x-Crad,-y)); %Направление притяжения точки разгона
