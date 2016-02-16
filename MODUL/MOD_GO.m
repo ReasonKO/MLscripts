@@ -1,6 +1,6 @@
 %re=MOD_GO(X,Xang,Rul)
 %re=[X(1),X(2),Xang] 
-%ГЊГ®Г¤ГҐГ«ГЁГ°Г®ГўГ Г­ГЁГҐ Г¤ГўГЁГ¦ГҐГ­ГЁГї Г°Г®ГЎГ®ГІГ 
+%Моделирование движения робота
 function re=MOD_GO(X,Xang,Rul,dT)
 global Modul;
 if isempty(Modul)
@@ -9,13 +9,13 @@ end
 if (nargin==3)    
     dT=Modul.dT;
 end
-%% Г€Г­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГї ГЇГ Г°Г Г¬ГҐГІГ°Г®Гў
+%% Инициализация параметров
 l=Modul.l_wheel;
 if (l==0)
     warning('l=0! a non-rotatable model?');
     l=inf;
 end
-%% ГЏГҐГ°ГҐГµГ®Г¤ ГЄ Г±ГЄГ®Г°Г®Г±ГІГїГ¬
+%% Переход к скоростям
 Left=Rul(1)*Modul.vSpeed;
 Right=Rul(2)*Modul.vSpeed;
 U=(Right-Left)/(2*l);
