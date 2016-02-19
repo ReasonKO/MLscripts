@@ -194,6 +194,8 @@ end
 
 
 
+
+
 %RP.Blue(1).z=[0,500];
 RP.Blue(1).rul=NewRotAlg(RP.Blue(1),B,0);
 %RP.Blue(9).rul=SCRIPT_Atack(RP.Blue(9),B,G,[-1000,0],Yellows);
