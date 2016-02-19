@@ -1,5 +1,6 @@
 function addPlotData(h,data1,data2,data3)
-if ~ishandle(h)
+if ~ishandle(h)    
+    warning('h is not handle');
     return
 end
 global Modul
