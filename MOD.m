@@ -3,6 +3,10 @@
 %Выполняет Modul_INI(); для подготовки
 %Затем в цикле:     MOD_All; Rules=zeros(size(Rules)); main;
 function MOD(T)
+global RP
+if isempty(RP)
+    addpath tools RPtools MODUL
+end
 Modul_INI();
 global Modul
 if (nargin==1) 

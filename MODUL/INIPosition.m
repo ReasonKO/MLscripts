@@ -12,7 +12,7 @@ Balls(:)=[1,0,0];
 %Blues(1,:)=[1,0,0,0];
 
 %%Blues(1,:)=randposition();
-for i=1:5
+for i=1:3
     Blues(i,:)=randposition();
     Yellows(i,:)=randposition();
 end

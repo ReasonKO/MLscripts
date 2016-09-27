@@ -3,6 +3,7 @@ global Blues Yellows Balls Rules RP PAR Modul
 if isempty(RP)
     addpath tools RPtools MODUL
 end
+
 %
 mainHeader();
 MAP(); %Отрисовка карты.
@@ -13,7 +14,7 @@ zMain_End=RP.zMain_End;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-PAR.HALF_FIELD=-1;
+PAR.HALF_FIELD=0;
 PAR.MAP_X=4000;
 PAR.MAP_Y=3000;
 PAR.RobotSize=200;
