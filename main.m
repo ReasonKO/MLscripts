@@ -27,18 +27,18 @@ PAR.RGate.X=2000;
 
 %% CONTRIL BLOCK
 %RP.Yellow(11).rul=GoToPoint(RP.Yellow(11),[-500,500]);
-G=[2000,0];
-B=RP.Ball.z;
-RP.Blue(9).rul=GOcircle(RP.Blue(9),B,angV(G-B));
 % G=[2000,0];
-% RP.Yellow(1).rul=SCRIPT_GoalKeeper(RP.Yellow(1),RP.Ball,-G);
-% RP.Yellow(2).rul=SCRIPT_Atack(RP.Yellow(2),RP.Ball,G,[500,-500]);
-% RP.Yellow(3).rul=SCRIPT_Atack(RP.Yellow(3),RP.Ball,G,[-500,-500]);
+% B=RP.Ball.z;
+% RP.Blue(9).rul=GOcircle(RP.Blue(9),B,angV(G-B));
+G=[2000,0];
+RP.Yellow(1).rul=SCRIPT_GoalKeeper(RP.Yellow(1),RP.Ball,-G);
+RP.Yellow(2).rul=SCRIPT_Atack(RP.Yellow(2),RP.Ball,G,[500,-500]);
+RP.Yellow(3).rul=SCRIPT_Atack(RP.Yellow(3),RP.Ball,G,[-500,-500]);
 % 
-% G=[-2000,0];
-% RP.Blue(1).rul=SCRIPT_GoalKeeper(RP.Blue(1),RP.Ball,-G);
-% RP.Blue(2).rul=SCRIPT_Atack(RP.Blue(2),RP.Ball,G,[500,500]);
-% RP.Blue(3).rul=SCRIPT_Atack(RP.Blue(3),RP.Ball,G,[-500,500]);
+G=[-2000,0];
+RP.Blue(1).rul=SCRIPT_GoalKeeper(RP.Blue(1),RP.Ball,-G);
+RP.Blue(2).rul=SCRIPT_Atack(RP.Blue(2),RP.Ball,G,[500,500]);
+RP.Blue(3).rul=SCRIPT_Atack(RP.Blue(3),RP.Ball,G,[-500,500]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
